@@ -52,6 +52,7 @@
                         <th class="text-left p-4">Website</th>
 
                         <th class="text-left p-4">Verified</th>
+                        <th class="p-4 text-left">Actions</th>
 
                     </tr>
 
@@ -94,6 +95,27 @@
                                 </span>
 
                             @endif
+
+                        </td>
+
+                        <td class="p-4">
+
+                            <a href="{{ route('companies.show', $company) }}"
+                                class="text-blue-600 hover:underline">
+
+                                View
+
+                            </a>
+
+                            |
+
+                             <a
+        href="{{ route('companies.edit', $company) }}"
+        class="rounded bg-yellow-500 px-3 py-2 text-white hover:bg-yellow-600">
+
+        Edit
+
+    </a>
 
                         </td>
 

@@ -7,6 +7,7 @@ use App\Models\Company;
 
 use App\Http\Requests\StoreCompanyRequest;
 use Illuminate\Support\Str;
+use App\Http\Requests\UpdateCompanyRequest;
 
 class CompanyController extends Controller
 {
@@ -56,15 +57,16 @@ class CompanyController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $company = Company::findOrFail($id);
+        return view('companies.show', compact('company'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Company $company)
     {
-        //
+       return view('companies.edit', compact('company'));
     }
 
     /**
@@ -72,7 +74,27 @@ class CompanyController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $company->update([
+
+        'name' => $request->name,
+
+        'slug' => Str::slug($request->name),
+
+        'website' => $request->website,
+
+        'email' => $request->email,
+
+        'phone' => $request->phone,
+
+        'city' => $request->city,
+
+        'description' => $request->description,
+
+    ]);
+
+    return redirect()
+        ->route('companies.index')
+        ->with('success', 'Company updated successfully.');
     }
 
     /**
