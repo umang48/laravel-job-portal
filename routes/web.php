@@ -2,8 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CompanyController;
 
 Route::view('/', 'pages.home.index');
+
+
+Route::resource('companies', CompanyController::class);
 
 
 Route::get('/dashboard', function () {
