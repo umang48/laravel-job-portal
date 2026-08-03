@@ -4,11 +4,14 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JobCategoryController;
 
 Route::view('/', 'pages.home.index');
 
 
 Route::resource('companies', CompanyController::class);
+
+Route::resource('job-categories', JobCategoryController::class);
 
 
 Route::middleware(['auth'])->group(function () {

@@ -10,7 +10,9 @@
 
         <div>
 
-            {{ auth()->user()->name }}
+           @if(auth()->check())
+    {{ auth()->user()->name }}
+@endif
 
         </div>
 
