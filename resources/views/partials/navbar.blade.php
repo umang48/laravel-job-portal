@@ -1,31 +1,19 @@
-<nav class="bg-white shadow-sm">
+<header class="bg-white shadow">
 
-    <div class="max-w-7xl mx-auto px-6">
+    <div class="flex justify-between items-center p-5">
 
-        <div class="flex justify-between items-center h-16">
+        <h1 class="text-xl font-bold">
 
-            <a href="/" class="text-2xl font-bold text-blue-600">
+            @yield('page-title')
 
-                Job Portal India
+        </h1>
 
-            </a>
+        <div>
 
-            <div class="space-x-6">
-
-                <a href="/">Home</a>
-
-                <a href="#">Jobs</a>
-
-                <a href="#">Companies</a>
-
-                <a href="#">Government Jobs</a>
-
-                <a href="#">Career Tips</a>
-
-            </div>
+            {{ auth()->user()->name }}
 
         </div>
 
     </div>
 
-</nav>
+</header>
