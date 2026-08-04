@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Job;
+use App\Models\Company;
+use App\Models\JobCategory;
 
 class JobController extends Controller
 {
@@ -25,9 +28,16 @@ class JobController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-        //
-    }
+{
+    $companies = Company::orderBy('name')->get();
+
+    $categories = JobCategory::orderBy('name')->get();
+
+    return view('jobs.create', compact(
+        'companies',
+        'categories'
+    ));
+}
 
     /**
      * Store a newly created resource in storage.
