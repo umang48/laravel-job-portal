@@ -13,6 +13,8 @@ Route::resource('companies', CompanyController::class);
 
 Route::resource('job-categories', JobCategoryController::class);
 
+Route::resource('jobs', JobController::class);
+
 
 Route::middleware(['auth'])->group(function () {
 

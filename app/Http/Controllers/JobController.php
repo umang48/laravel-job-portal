@@ -10,9 +10,16 @@ class JobController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        //
-    }
+{
+    $jobs = Job::with([
+        'company',
+        'category'
+    ])
+    ->latest()
+    ->paginate(10);
+
+    return view('jobs.index', compact('jobs'));
+}
 
     /**
      * Show the form for creating a new resource.
