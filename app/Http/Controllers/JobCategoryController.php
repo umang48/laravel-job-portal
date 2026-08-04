@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreJobCategoryRequest;
+use App\Http\Requests\UpdateJobCategoryRequest;
 use Illuminate\Support\Str;
 
 class JobCategoryController extends Controller
@@ -63,17 +64,27 @@ class JobCategoryController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(JobCategory $jobCategory)
-    {
-        //
-    }
+{
+    return view('job-categories.edit', compact('jobCategory'));
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JobCategory $jobCategory)
-    {
-        //
-    }
+    public function update(UpdateJobCategoryRequest $request, JobCategory $jobCategory)
+{
+    $validated = $request->validated();
+
+    $jobCategory->update([
+        ...$validated,
+        'slug' => Str::slug($validated['name']),
+        'is_active' => $request->boolean('is_active'),
+    ]);
+
+    return redirect()
+        ->route('job-categories.index')
+        ->with('success', 'Category updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.

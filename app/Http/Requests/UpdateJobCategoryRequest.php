@@ -22,8 +22,17 @@ class UpdateJobCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
+       $jobCategory = $this->route('job_category');
+
         return [
-            //
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('job_categories', 'name')->ignore($jobCategory),
+            ],
+            'description' => 'nullable|string',
+            'is_active' => 'nullable|boolean',
         ];
     }
 }
