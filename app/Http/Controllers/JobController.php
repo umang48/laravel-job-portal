@@ -14,14 +14,15 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
-    $jobs = Job::with([
-        'company',
-        'category'
-    ])
-    ->latest()
-    ->paginate(10);
+    $jobs = Job::with(['company', 'category'])
+        ->when($request->search, function ($query) use ($request) {
+            $query->where('title', 'like', '%' . $request->search . '%');
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
 
     return view('jobs.index', compact('jobs'));
 }

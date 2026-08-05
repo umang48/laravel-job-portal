@@ -4,6 +4,7 @@
 
 @section('content')
 
+
 <div class="flex justify-between items-center mb-6">
 
     <h1 class="text-3xl font-bold">
@@ -11,13 +12,23 @@
     </h1>
 
     <a href="{{ route('jobs.create') }}"
-       class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-3 rounded-lg">
-
+       class="bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700">
         + Add Job
-
     </a>
 
 </div>
+
+<form method="GET" class="mb-6">
+
+    <input
+        type="text"
+        name="search"
+        value="{{ request('search') }}"
+        placeholder="Search job title..."
+        class="w-full border rounded-lg p-3">
+
+</form>
+
 
 @if(session('success'))
 
@@ -46,6 +57,10 @@
 <th class="p-4 text-left">Type</th>
 
 <th class="p-4 text-left">Status</th>
+
+<th class="p-4 text-left">
+    Salary
+</th>
 
 <th class="p-4 text-center">Actions</th>
 
@@ -85,11 +100,26 @@
 
 <td class="p-4">
 
-<span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+@if($job->job_type == 'Full Time')
+    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+        Full Time
+    </span>
 
-{{ $job->job_type }}
+@elseif($job->job_type == 'Part Time')
+    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+        Part Time
+    </span>
 
-</span>
+@elseif($job->job_type == 'Remote')
+    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+        Remote
+    </span>
+
+@else
+    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
+        {{ $job->job_type }}
+    </span>
+@endif
 
 </td>
 
@@ -115,14 +145,39 @@ Inactive
 
 </td>
 
-<td class="p-4 text-center">
+<td class="p-4">
+    ₹{{ number_format($job->salary_min) }}
+    -
+    ₹{{ number_format($job->salary_max) }}
+</td>
 
-<a href="{{ route('jobs.edit', $job) }}"
-class="text-indigo-600 hover:underline">
+<td class="p-4">
 
-Edit
+    <div class="flex gap-3">
 
-</a>
+        <a href="{{ route('jobs.edit', $job) }}"
+           class="text-indigo-600 hover:underline">
+            Edit
+        </a>
+
+        <form
+            action="{{ route('jobs.destroy', $job) }}"
+            method="POST">
+
+            @csrf
+            @method('DELETE')
+
+            <button
+                onclick="return confirm('Delete this job?')"
+                class="text-red-600 hover:underline">
+
+                Delete
+
+            </button>
+
+        </form>
+
+    </div>
 
 </td>
 
