@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Models\Company;
 use App\Models\JobCategory;
+use App\Http\Requests\StoreJobRequest;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
@@ -42,10 +44,20 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(StoreJobRequest $request)
+{
+    $validated = $request->validated();
+
+    Job::create([
+        ...$validated,
+        'slug' => Str::slug($validated['title']),
+        'is_active' => $request->boolean('is_active'),
+    ]);
+
+    return redirect()
+        ->route('jobs.index')
+        ->with('success', 'Job created successfully.');
+}
 
     /**
      * Display the specified resource.

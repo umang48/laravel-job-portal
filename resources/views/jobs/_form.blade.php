@@ -1,28 +1,33 @@
-<div class="mb-6">
+<div class="mb-5">
+    <label class="block mb-2 font-medium">
+        Company
+    </label>
 
-<label class="block mb-2 font-medium">
+    <select
+        name="company_id"
+        class="w-full border rounded-lg p-3">
 
-Company
+        <option value="">
+            Select Company
+        </option>
 
-</label>
+        @foreach($companies as $company)
 
-<select
-name="company_id"
-class="w-full border rounded-lg p-3">
+            <option
+                value="{{ $company->id }}"
+                @selected(old('company_id', $job->company_id ?? '') == $company->id)>
 
-@foreach($companies as $company)
+                {{ $company->name }}
 
-<option
-value="{{ $company->id }}">
+            </option>
 
-{{ $company->name }}
+        @endforeach
 
-</option>
+    </select>
 
-@endforeach
-
-</select>
-
+    @error('company_id')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
 </div>
 
 <div class="mb-6">
@@ -40,9 +45,61 @@ class="w-full border rounded-lg p-3">
 @foreach($categories as $category)
 
 <option
-value="{{ $category->id }}">
+    value="{{ $category->id }}"
+    @selected(old('job_category_id', $job->job_category_id ?? '') == $category->id)>
+    {{ $category->name }}
+</option>
 
-{{ $category->name }}
+@endforeach
+
+</select>
+
+@error('job_category_id')
+    <p class="text-red-500 text-sm mt-1">
+        {{ $message }}
+    </p>
+@enderror
+
+</div>
+
+<div class="mb-5">
+    <label class="block mb-2 font-medium">Job Title</label>
+
+    <input
+        type="text"
+        name="title"
+        value="{{ old('title', $job->title ?? '') }}"
+        class="w-full border rounded-lg p-3">
+
+    @error('title')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<input
+type="text"
+name="location"
+value="{{ old('location',$job->location ?? '') }}"
+class="w-full border rounded-lg p-3">
+
+
+<select
+name="job_type"
+class="w-full border rounded-lg p-3">
+
+@foreach([
+'Full Time',
+'Part Time',
+'Contract',
+'Internship',
+'Remote'
+] as $type)
+
+<option
+value="{{ $type }}"
+@selected(old('job_type',$job->job_type ?? '')==$type)>
+
+{{ $type }}
 
 </option>
 
@@ -50,19 +107,61 @@ value="{{ $category->id }}">
 
 </select>
 
-</div>
 
-<div class="mb-6">
 
-<label class="block mb-2">
+<div class="grid grid-cols-2 gap-6">
 
-Job Title
+<div>
 
-</label>
+<label>Minimum Salary</label>
 
 <input
-type="text"
-name="title"
+type="number"
+name="salary_min"
+value="{{ old('salary_min', $job->salary_min ?? '') }}"
 class="w-full border rounded-lg p-3">
 
 </div>
+
+<div>
+
+<label>Maximum Salary</label>
+
+<input
+type="number"
+name="salary_max"
+class="w-full border rounded-lg p-3">
+
+</div>
+
+</div>
+
+<input
+type="text"
+name="experience"
+placeholder="2-4 Years"
+class="w-full border rounded-lg p-3">
+
+
+<input
+type="date"
+name="last_date"
+class="w-full border rounded-lg p-3">
+
+<textarea
+name="description"
+rows="6"
+class="w-full border rounded-lg p-3">{{ old('description', $job->description ?? '') }}</textarea>
+
+
+<label class="flex items-center gap-3">
+
+<input
+type="checkbox"
+name="is_active"
+value="1"
+@checked(old('is_active', $job->is_active ?? true))>
+
+Active Job
+
+</label>
