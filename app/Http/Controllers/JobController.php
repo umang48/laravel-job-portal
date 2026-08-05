@@ -7,6 +7,7 @@ use App\Models\Job;
 use App\Models\Company;
 use App\Models\JobCategory;
 use App\Http\Requests\StoreJobRequest;
+use App\Http\Requests\UpdateJobRequest;
 use Illuminate\Support\Str;
 
 class JobController extends Controller
@@ -71,18 +72,36 @@ class JobController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
-    }
+    public function edit(Job $job)
+{
+    $companies = Company::orderBy('name')->get();
+
+    $categories = JobCategory::orderBy('name')->get();
+
+    return view('jobs.edit', compact(
+        'job',
+        'companies',
+        'categories'
+    ));
+}
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+    public function update(UpdateJobRequest $request, Job $job)
+{
+    $validated = $request->validated();
+
+    $job->update([
+        ...$validated,
+        'slug' => Str::slug($validated['title']),
+        'is_active' => $request->boolean('is_active'),
+    ]);
+
+    return redirect()
+        ->route('jobs.index')
+        ->with('success', 'Job updated successfully.');
+}
 
     /**
      * Remove the specified resource from storage.

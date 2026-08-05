@@ -77,10 +77,10 @@ class="w-full border rounded-lg p-3">
 </div>
 
 <input
-type="text"
-name="location"
-value="{{ old('location',$job->location ?? '') }}"
-class="w-full border rounded-lg p-3">
+    type="text"
+    name="location"
+    value="{{ old('location', $job->location ?? '') }}"
+    class="w-full border rounded-lg p-3">
 
 
 <select
@@ -116,10 +116,10 @@ value="{{ $type }}"
 <label>Minimum Salary</label>
 
 <input
-type="number"
-name="salary_min"
-value="{{ old('salary_min', $job->salary_min ?? '') }}"
-class="w-full border rounded-lg p-3">
+    type="number"
+    name="salary_min"
+    value="{{ old('salary_min', $job->salary_min ?? '') }}"
+    class="w-full border rounded-lg p-3">
 
 </div>
 
@@ -128,39 +128,42 @@ class="w-full border rounded-lg p-3">
 <label>Maximum Salary</label>
 
 <input
-type="number"
-name="salary_max"
-class="w-full border rounded-lg p-3">
+    type="number"
+    name="salary_max"
+    value="{{ old('salary_max', $job->salary_max ?? '') }}"
+    class="w-full border rounded-lg p-3">
 
 </div>
 
 </div>
 
 <input
-type="text"
-name="experience"
-placeholder="2-4 Years"
-class="w-full border rounded-lg p-3">
+    type="text"
+    name="experience"
+    value="{{ old('experience', $job->experience ?? '') }}"
+    class="w-full border rounded-lg p-3">
 
 
 <input
-type="date"
-name="last_date"
-class="w-full border rounded-lg p-3">
+    type="date"
+    name="last_date"
+    value="{{ old('last_date', isset($job) ? $job->last_date?->format('Y-m-d') : '') }}"
+    class="w-full border rounded-lg p-3">
 
 <textarea
-name="description"
-rows="6"
-class="w-full border rounded-lg p-3">{{ old('description', $job->description ?? '') }}</textarea>
+    name="description"
+    rows="6"
+    class="w-full border rounded-lg p-3">{{ old('description', $job->description ?? '') }}</textarea>
 
 
 <label class="flex items-center gap-3">
 
 <input
-type="checkbox"
-name="is_active"
-value="1"
-@checked(old('is_active', $job->is_active ?? true))>
+    type="checkbox"
+    name="is_active"
+    value="1"
+    @checked(old('is_active', $job->is_active ?? true))
+>
 
 Active Job
 
