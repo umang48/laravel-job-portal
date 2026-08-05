@@ -8,33 +8,13 @@
 
     <nav class="mt-6">
 
-        <a href="/dashboard"
-           class="block px-6 py-3 hover:bg-slate-800">
+        <a href="{{ route('dashboard') }}">Dashboard</a>
 
-            Dashboard
+<a href="{{ route('companies.index') }}">Companies</a>
 
-        </a>
+<a href="{{ route('job-categories.index') }}">Categories</a>
 
-        <a href="/companies"
-           class="block px-6 py-3 hover:bg-slate-800">
-
-            Companies
-
-        </a>
-
-        <a href="#"
-           class="block px-6 py-3 hover:bg-slate-800">
-
-            Jobs
-
-        </a>
-
-        <a href="#"
-           class="block px-6 py-3 hover:bg-slate-800">
-
-            Categories
-
-        </a>
+<a href="{{ route('jobs.index') }}">Jobs</a>
 
     </nav>
 
