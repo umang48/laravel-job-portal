@@ -9,20 +9,25 @@ class Job extends Model
 {
     protected $table = 'job_posts';
 
+    protected $casts = [
+        'last_date' => 'date',
+        'is_active' => 'boolean',
+    ];
+
     protected $fillable = [
-    'company_id',
-    'job_category_id',
-    'title',
-    'slug',
-    'location',
-    'job_type',
-    'experience',
-    'salary_min',
-    'salary_max',
-    'description',
-    'last_date',
-    'is_active',
-];
+        'company_id',
+        'job_category_id',
+        'title',
+        'slug',
+        'location',
+        'job_type',
+        'experience',
+        'salary_min',
+        'salary_max',
+        'description',
+        'last_date',
+        'is_active',
+    ];
 
     public function company(): BelongsTo
     {

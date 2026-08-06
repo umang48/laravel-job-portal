@@ -76,13 +76,33 @@ class="w-full border rounded-lg p-3">
     @enderror
 </div>
 
-<input
-    type="text"
-    name="location"
-    value="{{ old('location', $job->location ?? '') }}"
-    class="w-full border rounded-lg p-3">
+<div class="mb-5">
 
+    <label class="block mb-2 font-medium">
+        Location
+    </label>
 
+    <input
+        type="text"
+        name="location"
+        value="{{ old('location', $job->location ?? '') }}"
+        class="w-full border rounded-lg p-3">
+
+    @error('location')
+        <p class="text-red-500 text-sm mt-1">
+            {{ $message }}
+        </p>
+    @enderror
+
+</div>
+
+<div class="mb-5">
+
+<label class="block mb-2 font-medium">
+
+Job Type
+
+</label>
 <select
 name="job_type"
 class="w-full border rounded-lg p-3">
@@ -107,7 +127,13 @@ value="{{ $type }}"
 
 </select>
 
+@error('job_type')
+<p class="text-red-500 text-sm mt-1">
+    {{ $message }}
+</p>
+@enderror
 
+</div>
 
 <div class="grid grid-cols-2 gap-6">
 
@@ -121,6 +147,10 @@ value="{{ $type }}"
     value="{{ old('salary_min', $job->salary_min ?? '') }}"
     class="w-full border rounded-lg p-3">
 
+    @error('salary_min')
+<p class="text-red-500 text-sm">{{ $message }}</p>
+@enderror
+
 </div>
 
 <div>
@@ -133,15 +163,36 @@ value="{{ $type }}"
     value="{{ old('salary_max', $job->salary_max ?? '') }}"
     class="w-full border rounded-lg p-3">
 
+    @error('salary_max')
+<p class="text-red-500 text-sm">{{ $message }}</p>
+@enderror
+
 </div>
 
 </div>
+
+<div class="mb-5">
+
+<label class="block mb-2 font-medium">
+
+Experience
+
+</label>
 
 <input
     type="text"
     name="experience"
     value="{{ old('experience', $job->experience ?? '') }}"
+    placeholder="2-4 Years"
     class="w-full border rounded-lg p-3">
+
+@error('experience')
+<p class="text-red-500 text-sm mt-1">
+{{ $message }}
+</p>
+@enderror
+
+</div>
 
 
 <input
@@ -150,11 +201,29 @@ value="{{ $type }}"
     value="{{ old('last_date', isset($job) ? $job->last_date?->format('Y-m-d') : '') }}"
     class="w-full border rounded-lg p-3">
 
+<div class="mb-5">
+
+<label class="block mb-2 font-medium">
+
+Description
+
+</label>
+
 <textarea
     name="description"
     rows="6"
     class="w-full border rounded-lg p-3">{{ old('description', $job->description ?? '') }}</textarea>
 
+@error('description')
+<p class="text-red-500 text-sm mt-1">
+{{ $message }}
+</p>
+@enderror
+
+</div>
+
+
+<div class="mb-6">
 
 <label class="flex items-center gap-3">
 
@@ -165,6 +234,8 @@ value="{{ $type }}"
     @checked(old('is_active', $job->is_active ?? true))
 >
 
-Active Job
+<span>Active Job</span>
 
 </label>
+
+</div>

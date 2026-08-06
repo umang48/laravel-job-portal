@@ -4,211 +4,133 @@
 
 @section('content')
 
+<div class="max-w-7xl mx-auto">
 
-<div class="flex justify-between items-center mb-6">
+    <div class="flex justify-between items-center mb-6">
 
-    <h1 class="text-3xl font-bold">
-        Jobs
-    </h1>
+        <h1 class="text-2xl font-bold">
+            Jobs
+        </h1>
 
-    <a href="{{ route('jobs.create') }}"
-       class="bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700">
-        + Add Job
-    </a>
+        <a href="{{ route('jobs.create') }}"
+           class="bg-blue-600 text-white px-5 py-2 rounded-lg">
 
-</div>
+            + Create Job
 
-<form method="GET" class="mb-6">
+        </a>
 
-    <input
-        type="text"
-        name="search"
-        value="{{ request('search') }}"
-        placeholder="Search job title..."
-        class="w-full border rounded-lg p-3">
+    </div>
 
-</form>
 
 
-@if(session('success'))
+    <div class="bg-white rounded-xl shadow overflow-hidden">
 
-<div class="bg-green-100 border border-green-300 text-green-700 p-4 rounded-lg mb-6">
-    {{ session('success') }}
-</div>
+        <table class="w-full">
 
-@endif
+            <thead class="bg-gray-100">
 
-<div class="bg-white rounded-xl shadow overflow-hidden">
+                <tr>
 
-<table class="w-full">
+                    <th class="text-left p-4">Title</th>
 
-<thead class="bg-gray-100">
+                    <th class="text-left p-4">Company</th>
 
-<tr>
+                    <th class="text-left p-4">Category</th>
 
-<th class="p-4 text-left">Title</th>
+                    <th class="text-left p-4">Location</th>
 
-<th class="p-4 text-left">Company</th>
+                    <th class="text-left p-4">Type</th>
 
-<th class="p-4 text-left">Category</th>
+                    <th class="text-left p-4">Status</th>
 
-<th class="p-4 text-left">Location</th>
+                    <th class="text-center p-4">Actions</th>
 
-<th class="p-4 text-left">Type</th>
+                </tr>
 
-<th class="p-4 text-left">Status</th>
+            </thead>
 
-<th class="p-4 text-left">
-    Salary
-</th>
+            <tbody>
 
-<th class="p-4 text-center">Actions</th>
+            @forelse($jobs as $job)
 
-</tr>
+                <tr class="border-t">
 
-</thead>
+                    <td class="p-4 font-medium">
+                        {{ $job->title }}
+                    </td>
 
-<tbody>
+                    <td class="p-4">
+                        {{ $job->company->name }}
+                    </td>
 
-@forelse($jobs as $job)
+                    <td class="p-4">
+                        {{ $job->category->name }}
+                    </td>
 
-<tr class="border-t">
+                    <td class="p-4">
+                        {{ $job->location }}
+                    </td>
 
-<td class="p-4 font-medium">
+                    <td class="p-4">
+                        {{ $job->job_type }}
+                    </td>
 
-{{ $job->title }}
+                    <td class="p-4">
 
-</td>
+                        @if($job->is_active)
 
-<td class="p-4">
+                            <span class="text-green-600 font-semibold">
+                                Active
+                            </span>
 
-{{ $job->company->name }}
+                        @else
 
-</td>
+                            <span class="text-red-600 font-semibold">
+                                Inactive
+                            </span>
 
-<td class="p-4">
+                        @endif
 
-{{ $job->category->name }}
+                    </td>
 
-</td>
+                    <td class="p-4 text-center">
 
-<td class="p-4">
+                        <a href="{{ route('jobs.edit', $job) }}"
+                           class="text-blue-600">
 
-{{ $job->location }}
+                            Edit
 
-</td>
+                        </a>
 
-<td class="p-4">
+                    </td>
 
-@if($job->job_type == 'Full Time')
-    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-        Full Time
-    </span>
+                </tr>
 
-@elseif($job->job_type == 'Part Time')
-    <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
-        Part Time
-    </span>
+            @empty
 
-@elseif($job->job_type == 'Remote')
-    <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
-        Remote
-    </span>
+                <tr>
 
-@else
-    <span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">
-        {{ $job->job_type }}
-    </span>
-@endif
+                    <td colspan="7" class="text-center p-8">
 
-</td>
+                        No jobs found.
 
-<td class="p-4">
+                    </td>
 
-@if($job->is_active)
+                </tr>
 
-<span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+            @endforelse
 
-Active
+            </tbody>
 
-</span>
+        </table>
 
-@else
+    </div>
 
-<span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+    <div class="mt-6">
 
-Inactive
+        {{ $jobs->links() }}
 
-</span>
-
-@endif
-
-</td>
-
-<td class="p-4">
-    ₹{{ number_format($job->salary_min) }}
-    -
-    ₹{{ number_format($job->salary_max) }}
-</td>
-
-<td class="p-4">
-
-    <div class="flex gap-2">
-
-<a
-href="{{ route('jobs.edit',$job) }}"
-class="px-3 py-1 rounded bg-blue-100 text-blue-700">
-
-Edit
-
-</a>
-
-<form
-action="{{ route('jobs.destroy',$job) }}"
-method="POST">
-
-@csrf
-@method('DELETE')
-
-<button
-onclick="return confirm('Delete Job?')"
-class="px-3 py-1 rounded bg-red-100 text-red-700">
-
-Delete
-
-</button>
-
-</form>
-
-</div>
-
-</td>
-
-</tr>
-
-@empty
-
-<tr>
-
-<td colspan="7" class="p-8 text-center text-gray-500">
-
-No jobs found.
-
-</td>
-
-</tr>
-
-@endforelse
-
-</tbody>
-
-</table>
-
-</div>
-
-<div class="mt-6">
-
-{{ $jobs->links() }}
+    </div>
 
 </div>
 

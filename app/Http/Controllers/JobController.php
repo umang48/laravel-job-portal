@@ -15,18 +15,17 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-{
-    $jobs = Job::with(['company', 'category'])
-        ->when($request->search, function ($query) use ($request) {
-            $query->where('title', 'like', '%' . $request->search . '%');
-        })
+    public function index()
+    {
+        $jobs = Job::with([
+            'company',
+            'category'
+        ])
         ->latest()
-        ->paginate(10)
-        ->withQueryString();
+        ->paginate(10);
 
-    return view('jobs.index', compact('jobs'));
-}
+        return view('jobs.index', compact('jobs'));
+    }
 
     /**
      * Show the form for creating a new resource.
