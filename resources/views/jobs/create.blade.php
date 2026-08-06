@@ -1,37 +1,31 @@
 @extends('layouts.app')
 
-@section('title','Create Job')
+@section('title', 'Create Job')
 
 @section('content')
 
-<div class="max-w-5xl">
+<div class="max-w-5xl mx-auto bg-white rounded-xl shadow p-8">
 
-    <div class="bg-white rounded-xl shadow p-8">
+    <h1 class="text-2xl font-bold mb-6">
+        Create Job
+    </h1>
 
-        <h1 class="text-3xl font-bold mb-6">
+    <form
+        action="{{ route('jobs.store') }}"
+        method="POST">
 
-            Post New Job
+        @csrf
 
-        </h1>
+        @include('jobs._form')
 
-        <form
-            action="{{ route('jobs.store') }}"
-            method="POST">
+        <button
+            class="bg-blue-600 text-white px-6 py-3 rounded-lg mt-6">
 
-            @csrf
+            Save Job
 
-            @include('jobs._form')
+        </button>
 
-            <button
-                class="mt-6 bg-indigo-600 text-white px-6 py-3 rounded-lg hover:bg-indigo-700">
-
-                Create Job
-
-            </button>
-
-        </form>
-
-    </div>
+    </form>
 
 </div>
 
