@@ -50,6 +50,25 @@
         @enderror
     </div>
 
+    <div class="mb-5">
+
+    <label class="block mb-2 font-medium">
+        Company Logo
+    </label>
+
+    <input
+        type="file"
+        name="logo"
+        class="w-full border rounded-lg p-3">
+
+    @error('logo')
+        <p class="text-red-500 text-sm mt-1">
+            {{ $message }}
+        </p>
+    @enderror
+
+</div>
+
     <div>
         <label class="block mb-2 font-medium">
             Phone

@@ -52,6 +52,7 @@
                         <th class="text-left p-4">Website</th>
 
                         <th class="text-left p-4">Verified</th>
+                        <th class="text-left p-4">Logo</th>
                         <th class="p-4 text-left">Actions</th>
 
                     </tr>
@@ -96,6 +97,21 @@
 
                             @endif
 
+                        </td>
+
+                        <td class="p-4">
+                            @if($company->logo)
+
+                                <img
+                                    src="{{ asset('storage/'.$company->logo) }}"
+                                    alt="{{ $company->name }}"
+                                    class="w-12 h-12 rounded-lg object-cover">
+
+                            @else
+
+                                <span class="text-gray-400">No Logo</span>
+
+                            @endif
                         </td>
 
                         <td class="p-4">

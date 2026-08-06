@@ -11,7 +11,8 @@
     <form
         action="{{ route('companies.store') }}"
         method="POST"
-        class="rounded-lg bg-white p-8 shadow">
+        class="rounded-lg bg-white p-8 shadow"
+        enctype="multipart/form-data">
 
         @include('companies._form', [
             'buttonText' => 'Save Company'

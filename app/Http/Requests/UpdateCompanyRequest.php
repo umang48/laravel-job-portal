@@ -24,17 +24,13 @@ class UpdateCompanyRequest extends FormRequest
     {
          return [
 
-            'name' => ['required', 'string', 'max:255'],
-
-            'website' => ['nullable', 'url'],
-
-            'email' => ['nullable', 'email'],
-
-            'phone' => ['nullable', 'string', 'max:20'],
-
-            'city' => ['nullable', 'string', 'max:100'],
-
-            'description' => ['nullable', 'string'],
+            'name' => 'required|string|max:255',
+        'website' => 'nullable|url',
+        'email' => 'nullable|email',
+        'phone' => 'nullable|string|max:20',
+        'city' => 'nullable|string|max:100',
+        'description' => 'nullable|string',
+        'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
 
         ];
     }

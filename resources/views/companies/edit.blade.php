@@ -11,7 +11,8 @@
     <form
         action="{{ route('companies.update', $company) }}"
         method="POST"
-        class="rounded-lg bg-white p-8 shadow">
+        class="rounded-lg bg-white p-8 shadow"
+        enctype="multipart/form-data">
 
         @csrf
         @method('PUT')

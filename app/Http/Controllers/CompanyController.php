@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Http\Requests\StoreCompanyRequest;
 use Illuminate\Support\Str;
 use App\Http\Requests\UpdateCompanyRequest;
+use Illuminate\Support\Facades\Storage;
 
 class CompanyController extends Controller
 {
@@ -35,10 +36,17 @@ class CompanyController extends Controller
      */
     public function store(StoreCompanyRequest $request)
     {
+        $logo = null;
+
+        if ($request->hasFile('logo')) {
+            $logo = $request->file('logo')->store('companies', 'public');
+        }
+
         Company::create([
             'user_id'      => auth()->id(),
             'name'         => $request->name,
             'slug'         => Str::slug($request->name),
+            'logo'         => $logo,
             'website'      => $request->website,
             'email'        => $request->email,
             'phone'        => $request->phone,
