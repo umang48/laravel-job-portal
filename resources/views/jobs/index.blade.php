@@ -21,6 +21,117 @@
 
     </div>
 
+    <div class="bg-white rounded-lg shadow p-6 mb-6">
+
+<form method="GET">
+
+<div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+
+    <input
+        type="text"
+        name="search"
+        value="{{ request('search') }}"
+        placeholder="Search Job..."
+        class="border rounded-lg p-3">
+
+    <select
+        name="company"
+        class="border rounded-lg p-3">
+
+        <option value="">All Companies</option>
+
+        @foreach($companies as $company)
+
+            <option
+                value="{{ $company->id }}"
+                @selected(request('company') == $company->id)>
+
+                {{ $company->name }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+    <select
+        name="category"
+        class="border rounded-lg p-3">
+
+        <option value="">All Categories</option>
+
+        @foreach($categories as $category)
+
+            <option
+                value="{{ $category->id }}"
+                @selected(request('category') == $category->id)>
+
+                {{ $category->name }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+    <input
+        type="text"
+        name="location"
+        value="{{ request('location') }}"
+        placeholder="Location"
+        class="border rounded-lg p-3">
+
+    <select
+        name="type"
+        class="border rounded-lg p-3">
+
+        <option value="">Job Type</option>
+
+        @foreach([
+            'Full Time',
+            'Part Time',
+            'Contract',
+            'Internship',
+            'Remote'
+        ] as $type)
+
+            <option
+                value="{{ $type }}"
+                @selected(request('type') == $type)>
+
+                {{ $type }}
+
+            </option>
+
+        @endforeach
+
+    </select>
+
+</div>
+
+<div class="mt-5 flex gap-3">
+
+<button
+    class="bg-blue-600 text-white px-5 py-2 rounded">
+
+Search
+
+</button>
+
+<a
+    href="{{ route('jobs.index') }}"
+    class="bg-gray-500 text-white px-5 py-2 rounded">
+
+Reset
+
+</a>
+
+</div>
+
+</form>
+
+</div>
+
 
 
     <div class="bg-white rounded-xl shadow overflow-hidden">

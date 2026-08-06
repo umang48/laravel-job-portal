@@ -15,16 +15,43 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $jobs = Job::with([
-            'company',
-            'category'
-        ])
-        ->latest()
-        ->paginate(10);
+        $jobs = Job::with(['company', 'category'])
 
-        return view('jobs.index', compact('jobs'));
+            ->when($request->search, function ($query, $search) {
+                $query->where('title', 'like', "%{$search}%");
+            })
+
+            ->when($request->company, function ($query, $company) {
+                $query->where('company_id', $company);
+            })
+
+            ->when($request->category, function ($query, $category) {
+                $query->where('job_category_id', $category);
+            })
+
+            ->when($request->location, function ($query, $location) {
+                $query->where('location', 'like', "%{$location}%");
+            })
+
+            ->when($request->type, function ($query, $type) {
+                $query->where('job_type', $type);
+            })
+
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        $companies = Company::orderBy('name')->get();
+
+        $categories = JobCategory::orderBy('name')->get();
+
+        return view('jobs.index', compact(
+            'jobs',
+            'companies',
+            'categories'
+        ));
     }
 
     /**
