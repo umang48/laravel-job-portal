@@ -153,31 +153,34 @@ Inactive
 
 <td class="p-4">
 
-    <div class="flex gap-3">
+    <div class="flex gap-2">
 
-        <a href="{{ route('jobs.edit', $job) }}"
-           class="text-indigo-600 hover:underline">
-            Edit
-        </a>
+<a
+href="{{ route('jobs.edit',$job) }}"
+class="px-3 py-1 rounded bg-blue-100 text-blue-700">
 
-        <form
-            action="{{ route('jobs.destroy', $job) }}"
-            method="POST">
+Edit
 
-            @csrf
-            @method('DELETE')
+</a>
 
-            <button
-                onclick="return confirm('Delete this job?')"
-                class="text-red-600 hover:underline">
+<form
+action="{{ route('jobs.destroy',$job) }}"
+method="POST">
 
-                Delete
+@csrf
+@method('DELETE')
 
-            </button>
+<button
+onclick="return confirm('Delete Job?')"
+class="px-3 py-1 rounded bg-red-100 text-red-700">
 
-        </form>
+Delete
 
-    </div>
+</button>
+
+</form>
+
+</div>
 
 </td>
 

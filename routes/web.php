@@ -14,6 +14,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+        
 
     Route::resource('companies', CompanyController::class);
 
