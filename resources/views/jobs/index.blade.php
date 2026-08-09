@@ -214,12 +214,32 @@
                         View
                     </a>
 
-                        <a href="{{ route('jobs.edit', $job) }}"
-                           class="text-blue-600">
+                        @can('update', $job)
+    <a
+        href="{{ route('jobs.edit', $job) }}"
+        class="text-indigo-600 hover:text-indigo-800">
+        Edit
+    </a>
+@endcan
 
-                            Edit
+@can('delete', $job)
+    <form
+        method="POST"
+        action="{{ route('jobs.destroy', $job) }}"
+        class="inline">
 
-                        </a>
+        @csrf
+        @method('DELETE')
+
+        <button
+            type="submit"
+            onclick="return confirm('Are you sure you want to delete this job?')"
+            class="text-red-600 hover:text-red-800">
+            Delete
+        </button>
+
+    </form>
+@endcan
 
                     </td>
 

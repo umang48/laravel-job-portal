@@ -10,6 +10,8 @@ use App\Http\Requests\StoreJobRequest;
 use App\Http\Requests\UpdateJobRequest;
 use Illuminate\Support\Str;
 
+use Illuminate\Support\Facades\Gate;
+
 class JobController extends Controller
 {
     /**
@@ -68,11 +70,16 @@ class JobController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+
+public function create()
 {
+    Gate::authorize('create', Job::class);
+
     $companies = Company::orderBy('name')->get();
 
-    $categories = JobCategory::orderBy('name')->get();
+    $categories = JobCategory::where('is_active', true)
+        ->orderBy('name')
+        ->get();
 
     return view('jobs.create', compact(
         'companies',
@@ -83,8 +90,10 @@ class JobController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreJobRequest $request)
+public function store(StoreJobRequest $request)
 {
+    Gate::authorize('create', Job::class);
+
     $validated = $request->validated();
 
     Job::create([
@@ -114,11 +123,15 @@ class JobController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Job $job)
+public function edit(Job $job)
 {
+    Gate::authorize('update', $job);
+
     $companies = Company::orderBy('name')->get();
 
-    $categories = JobCategory::orderBy('name')->get();
+    $categories = JobCategory::where('is_active', true)
+        ->orderBy('name')
+        ->get();
 
     return view('jobs.edit', compact(
         'job',
@@ -130,8 +143,10 @@ class JobController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateJobRequest $request, Job $job)
+public function update(UpdateJobRequest $request, Job $job)
 {
+    Gate::authorize('update', $job);
+
     $validated = $request->validated();
 
     $job->update([
@@ -148,12 +163,16 @@ class JobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Job $job)
+public function destroy(Job $job)
 {
+    Gate::authorize('delete', $job);
+
     $job->delete();
 
     return redirect()
         ->route('jobs.index')
         ->with('success', 'Job deleted successfully.');
 }
+
+
 }
