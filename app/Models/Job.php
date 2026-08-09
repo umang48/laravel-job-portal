@@ -9,11 +9,6 @@ class Job extends Model
 {
     protected $table = 'job_posts';
 
-    protected $casts = [
-        'last_date' => 'date',
-        'is_active' => 'boolean',
-    ];
-
     protected $fillable = [
         'company_id',
         'job_category_id',
@@ -28,6 +23,14 @@ class Job extends Model
         'last_date',
         'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'last_date' => 'date',
+            'is_active' => 'boolean',
+        ];
+    }
 
     public function company(): BelongsTo
     {

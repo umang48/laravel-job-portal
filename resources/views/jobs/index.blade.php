@@ -208,6 +208,12 @@
 
                     <td class="p-4 text-center">
 
+                    <a
+                        href="{{ route('jobs.show', $job) }}"
+                        class="text-blue-600 hover:text-blue-800">
+                        View
+                    </a>
+
                         <a href="{{ route('jobs.edit', $job) }}"
                            class="text-blue-600">
 
