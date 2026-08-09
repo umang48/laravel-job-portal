@@ -17,39 +17,50 @@ class JobController extends Controller
      */
     public function index(Request $request)
     {
-        $jobs = Job::with(['company', 'category'])
+        $query = Job::with([
+            'company',
+            'category',
+        ]);
 
-            ->when($request->search, function ($query, $search) {
-                $query->where('title', 'like', "%{$search}%");
-            })
+        // Search
+        if ($request->filled('search')) {
+            $search = $request->search;
 
-            ->when($request->company, function ($query, $company) {
-                $query->where('company_id', $company);
-            })
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('location', 'like', "%{$search}%")
+                    ->orWhereHas('company', function ($companyQuery) use ($search) {
+                        $companyQuery->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
 
-            ->when($request->category, function ($query, $category) {
-                $query->where('job_category_id', $category);
-            })
+        // Category filter
+        if ($request->filled('category')) {
+            $query->where('job_category_id', $request->category);
+        }
 
-            ->when($request->location, function ($query, $location) {
-                $query->where('location', 'like', "%{$location}%");
-            })
+        // Job type filter
+        if ($request->filled('job_type')) {
+            $query->where('job_type', $request->job_type);
+        }
 
-            ->when($request->type, function ($query, $type) {
-                $query->where('job_type', $type);
-            })
+        // Location filter
+        if ($request->filled('location')) {
+            $query->where('location', 'like', '%' . $request->location . '%');
+        }
 
+        $jobs = $query
             ->latest()
             ->paginate(10)
             ->withQueryString();
 
-        $companies = Company::orderBy('name')->get();
-
-        $categories = JobCategory::orderBy('name')->get();
+        $categories = JobCategory::where('is_active', true)
+            ->orderBy('name')
+            ->get();
 
         return view('jobs.index', compact(
             'jobs',
-            'companies',
             'categories'
         ));
     }
