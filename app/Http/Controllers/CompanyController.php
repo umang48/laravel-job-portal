@@ -80,36 +80,52 @@ class CompanyController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        $company->update([
-
-        'name' => $request->name,
-
-        'slug' => Str::slug($request->name),
-
-        'website' => $request->website,
-
-        'email' => $request->email,
-
-        'phone' => $request->phone,
-
-        'city' => $request->city,
-
-        'description' => $request->description,
-
+  public function update(Request $request, Company $company)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'website' => 'nullable|url',
+        'email' => 'nullable|email',
+        'phone' => 'nullable|string|max:20',
+        'city' => 'nullable|string|max:100',
+        'description' => 'nullable|string',
+        'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
     ]);
+
+    if ($request->hasFile('logo')) {
+
+        // Delete old logo
+        if ($company->logo) {
+            Storage::disk('public')->delete($company->logo);
+        }
+
+        // Store new logo
+        $validated['logo'] = $request->file('logo')
+            ->store('companies', 'public');
+    }
+
+    $validated['slug'] = Str::slug($validated['name']);
+
+    $company->update($validated);
 
     return redirect()
         ->route('companies.index')
         ->with('success', 'Company updated successfully.');
-    }
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Company $company)
     {
-        //
+        if ($company->logo) {
+            Storage::disk('public')->delete($company->logo);
+        }
+
+        $company->delete();
+
+        return redirect()
+            ->route('companies.index')
+            ->with('success', 'Company deleted successfully.');
     }
 }

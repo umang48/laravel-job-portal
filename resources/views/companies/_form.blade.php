@@ -59,6 +59,7 @@
     <input
         type="file"
         name="logo"
+        accept="image/*"
         class="w-full border rounded-lg p-3">
 
     @error('logo')
@@ -66,6 +67,21 @@
             {{ $message }}
         </p>
     @enderror
+
+    @if(isset($company) && $company->logo)
+
+        <div class="mt-3">
+            <p class="text-sm text-gray-500 mb-2">
+                Current Logo
+            </p>
+
+            <img
+                src="{{ asset('storage/' . $company->logo) }}"
+                alt="{{ $company->name }}"
+                class="w-24 h-24 object-contain rounded-lg border bg-white p-2">
+        </div>
+
+    @endif
 
 </div>
 
