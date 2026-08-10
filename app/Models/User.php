@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 
 use App\Models\Company;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -53,5 +54,10 @@ class User extends Authenticatable
     public function company(): HasOne
 {
     return $this->hasOne(Company::class);
+}
+
+public function jobApplications(): HasMany
+{
+    return $this->hasMany(JobApplication::class);
 }
 }
