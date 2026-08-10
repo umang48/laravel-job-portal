@@ -9,6 +9,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 
 
+
 Route::view('/', 'pages.home.index');
 
 Route::middleware('auth')->group(function () {
@@ -34,6 +35,25 @@ Route::middleware('auth')->group(function () {
         '/jobs/{job}/apply',
         [JobApplicationController::class, 'store']
     )->name('jobs.apply');
+
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::get(
+        '/jobs/{job}/applications',
+        [JobApplicationController::class, 'index']
+    )->name('jobs.applications.index');
+
+    Route::get(
+        '/job-applications/{jobApplication}',
+        [JobApplicationController::class, 'show']
+    )->name('job-applications.show');
+
+    Route::patch(
+        '/job-applications/{jobApplication}/status',
+        [JobApplicationController::class, 'updateStatus']
+    )->name('job-applications.status');
 
 });
 

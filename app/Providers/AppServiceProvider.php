@@ -7,6 +7,9 @@ use App\Policies\JobPolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
+use App\Models\JobApplication;
+use App\Policies\JobApplicationPolicy;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -23,5 +26,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
          Gate::policy(Job::class, JobPolicy::class);
+         Gate::policy(JobApplication::class, JobApplicationPolicy::class);
     }
 }
