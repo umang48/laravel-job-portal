@@ -254,4 +254,105 @@
 
 </div>
 
+
+@auth
+
+    @if (session('success'))
+        <div class="mb-6 rounded-lg bg-green-100 p-4 text-green-700">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="mb-6 rounded-lg bg-red-100 p-4 text-red-700">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="mt-8 rounded-xl bg-white p-6 shadow">
+
+        <h2 class="mb-5 text-xl font-bold">
+            Apply for this Job
+        </h2>
+
+        <form
+            method="POST"
+            action="{{ route('jobs.apply', $job) }}"
+            enctype="multipart/form-data">
+
+            @csrf
+
+            <div class="mb-5">
+                <label class="mb-2 block font-medium">
+                    Resume <span class="text-red-500">*</span>
+                </label>
+
+                <input
+                    type="file"
+                    name="resume"
+                    accept=".pdf,.doc,.docx"
+                    class="w-full rounded-lg border p-3">
+
+                @error('resume')
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+
+                <p class="mt-1 text-sm text-gray-500">
+                    PDF, DOC or DOCX. Maximum 5 MB.
+                </p>
+            </div>
+
+            <div class="mb-5">
+                <label class="mb-2 block font-medium">
+                    Cover Letter
+                </label>
+
+                <textarea
+                    name="cover_letter"
+                    rows="6"
+                    class="w-full rounded-lg border p-3"
+                    placeholder="Tell the employer why you are suitable for this position...">{{ old('cover_letter') }}</textarea>
+
+                @error('cover_letter')
+                    <p class="mt-1 text-sm text-red-600">
+                        {{ $message }}
+                    </p>
+                @enderror
+            </div>
+
+            <button
+                type="submit"
+                class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700">
+
+                Apply Now
+
+            </button>
+
+        </form>
+
+    </div>
+
+@else
+
+    <div class="mt-8 rounded-lg bg-blue-50 p-6">
+
+        <p class="text-gray-700">
+            Please login to apply for this job.
+        </p>
+
+        <a
+            href="{{ route('login') }}"
+            class="mt-3 inline-block rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
+
+            Login to Apply
+
+        </a>
+
+    </div>
+
+@endauth
+
+
 @endsection
