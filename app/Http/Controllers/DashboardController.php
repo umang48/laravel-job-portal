@@ -2,51 +2,59 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Company;
 use App\Models\Job;
-use App\Models\JobCategory;
-
-
 use App\Models\JobApplication;
-use Illuminate\Support\Facades\Auth;
-
+use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index()
+    /**
+     * Display the employer dashboard.
+     */
+    public function index(): View
     {
-        $userId = Auth::id();
+        $user = auth()->user();
 
-        $applicationsCount = JobApplication::where('user_id', $userId)
+        // Get companies owned by the logged-in employer.
+        $companyIds = $user->companies()->pluck('id');
+
+        // Jobs belonging to employer's companies.
+        $jobsQuery = Job::whereIn('company_id', $companyIds);
+
+        $totalJobs = (clone $jobsQuery)->count();
+
+        $activeJobs = (clone $jobsQuery)
+            ->where('is_active', true)
             ->count();
 
-        $pendingCount = JobApplication::where('user_id', $userId)
-            ->where('status', 'Pending')
+        // Applications received for employer's jobs.
+        $applicationsQuery = JobApplication::whereHas('job', function ($query) use ($companyIds) {
+            $query->whereIn('company_id', $companyIds);
+        });
+
+        $totalApplicants = (clone $applicationsQuery)
+            ->distinct('user_id')
+            ->count('user_id');
+
+        $pendingApplications = (clone $applicationsQuery)
+            ->where('status', 'pending')
             ->count();
 
-        $shortlistedCount = JobApplication::where('user_id', $userId)
-            ->where('status', 'Shortlisted')
-            ->count();
-
-        $hiredCount = JobApplication::where('user_id', $userId)
-            ->where('status', 'Hired')
-            ->count();
-
-        $recentApplications = JobApplication::with([
-            'job.company',
-            'job.category',
-        ])
-            ->where('user_id', $userId)
+        // Recent applications.
+        $recentApplications = (clone $applicationsQuery)
+            ->with([
+                'user',
+                'job',
+            ])
             ->latest()
             ->take(5)
             ->get();
 
         return view('dashboard', compact(
-            'applicationsCount',
-            'pendingCount',
-            'shortlistedCount',
-            'hiredCount',
+            'totalJobs',
+            'activeJobs',
+            'totalApplicants',
+            'pendingApplications',
             'recentApplications'
         ));
     }

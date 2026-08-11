@@ -362,3 +362,362 @@
 </div>
 
 @endsection
+
+
+<x-app-layout>
+
+    <x-slot name="header">
+
+        <div class="flex items-center justify-between">
+
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                    Employer Dashboard
+                </h2>
+
+                <p class="text-sm text-gray-500 mt-1">
+                    Manage your jobs and applications.
+                </p>
+            </div>
+
+            <a
+                href="{{ route('jobs.create') }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium"
+            >
+                + Post New Job
+            </a>
+
+        </div>
+
+    </x-slot>
+
+
+    <div class="py-8">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+            {{-- Statistics --}}
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+
+
+                {{-- Total Jobs --}}
+
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm text-gray-500">
+                                Total Jobs
+                            </p>
+
+                            <p class="text-3xl font-bold text-gray-900 mt-2">
+                                {{ $totalJobs }}
+                            </p>
+
+                        </div>
+
+                        <div class="bg-blue-100 text-blue-600 rounded-lg p-3">
+
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"
+                                />
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="{{ route('jobs.index') }}"
+                        class="inline-block text-sm text-blue-600 mt-4 hover:underline"
+                    >
+                        Manage Jobs →
+                    </a>
+
+                </div>
+
+
+                {{-- Active Jobs --}}
+
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm text-gray-500">
+                                Active Jobs
+                            </p>
+
+                            <p class="text-3xl font-bold text-gray-900 mt-2">
+                                {{ $activeJobs }}
+                            </p>
+
+                        </div>
+
+                        <div class="bg-green-100 text-green-600 rounded-lg p-3">
+
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-sm text-gray-500 mt-4">
+                        Currently accepting applications
+                    </p>
+
+                </div>
+
+
+                {{-- Total Applicants --}}
+
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm text-gray-500">
+                                Total Applicants
+                            </p>
+
+                            <p class="text-3xl font-bold text-gray-900 mt-2">
+                                {{ $totalApplicants }}
+                            </p>
+
+                        </div>
+
+                        <div class="bg-purple-100 text-purple-600 rounded-lg p-3">
+
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M17 20h5v-2a4 4 0 00-4-4h-1m-4 6H7a4 4 0 01-4-4v-1a4 4 0 014-4h6a4 4 0 014 4v1a4 4 0 01-4 4zM9 8a4 4 0 100-8 4 4 0 000 8zm8 0a3 3 0 100-6 3 3 0 000 6z"
+                                />
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <p class="text-sm text-gray-500 mt-4">
+                        Unique job seekers
+                    </p>
+
+                </div>
+
+
+                {{-- Pending Applications --}}
+
+                <div class="bg-white rounded-xl shadow-sm border p-6">
+
+                    <div class="flex items-center justify-between">
+
+                        <div>
+
+                            <p class="text-sm text-gray-500">
+                                Pending Applications
+                            </p>
+
+                            <p class="text-3xl font-bold text-gray-900 mt-2">
+                                {{ $pendingApplications }}
+                            </p>
+
+                        </div>
+
+                        <div class="bg-yellow-100 text-yellow-600 rounded-lg p-3">
+
+                            <svg
+                                class="w-6 h-6"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M12 8v4l3 2m6-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                                />
+                            </svg>
+
+                        </div>
+
+                    </div>
+
+                    <a
+                        href="#recent-applications"
+                        class="inline-block text-sm text-blue-600 mt-4 hover:underline"
+                    >
+                        Review Applications →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            {{-- Recent Applications --}}
+
+            <div
+                id="recent-applications"
+                class="bg-white rounded-xl shadow-sm border"
+            >
+
+                <div class="flex items-center justify-between p-6 border-b">
+
+                    <div>
+
+                        <h3 class="text-lg font-semibold text-gray-900">
+                            Recent Applications
+                        </h3>
+
+                        <p class="text-sm text-gray-500 mt-1">
+                            Latest applications received for your jobs.
+                        </p>
+
+                    </div>
+
+                    <a
+                        href="#"
+                        class="text-sm text-blue-600 hover:underline"
+                    >
+                        View All
+                    </a>
+
+                </div>
+
+
+                @if($recentApplications->count())
+
+                    <div class="divide-y">
+
+                        @foreach($recentApplications as $application)
+
+                            <div class="p-6 flex items-center justify-between hover:bg-gray-50">
+
+                                <div class="flex items-center gap-4">
+
+                                    <div class="w-11 h-11 rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-600">
+
+                                        {{ strtoupper(substr($application->user->name, 0, 1)) }}
+
+                                    </div>
+
+                                    <div>
+
+                                        <p class="font-semibold text-gray-900">
+                                            {{ $application->user->name }}
+                                        </p>
+
+                                        <p class="text-sm text-gray-500">
+                                            Applied for
+                                            <span class="font-medium text-gray-700">
+                                                {{ $application->job->title }}
+                                            </span>
+                                        </p>
+
+                                        <p class="text-xs text-gray-400 mt-1">
+                                            {{ $application->created_at->diffForHumans() }}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="flex items-center gap-4">
+
+                                    @if($application->status === 'pending')
+
+                                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">
+                                            Pending
+                                        </span>
+
+                                    @elseif($application->status === 'shortlisted')
+
+                                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                            Shortlisted
+                                        </span>
+
+                                    @elseif($application->status === 'rejected')
+
+                                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                            Rejected
+                                        </span>
+
+                                    @else
+
+                                        <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+                                            {{ ucfirst($application->status) }}
+                                        </span>
+
+                                    @endif
+
+                                </div>
+
+                            </div>
+
+                        @endforeach
+
+                    </div>
+
+                @else
+
+                    <div class="p-10 text-center">
+
+                        <p class="text-gray-500">
+                            No applications received yet.
+                        </p>
+
+                        <a
+                            href="{{ route('jobs.create') }}"
+                            class="inline-block mt-4 text-blue-600 hover:underline"
+                        >
+                            Post your first job →
+                        </a>
+
+                    </div>
+
+                @endif
+
+            </div>
+
+        </div>
+
+    </div>
+
+</x-app-layout>
