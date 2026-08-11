@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\MyApplicationController;
 
 
 
@@ -16,6 +17,11 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
+
+    Route::get('/my-applications', [
+        MyApplicationController::class,
+        'index'
+    ])->name('my-applications.index');
         
 
     Route::resource('companies', CompanyController::class);
@@ -56,6 +62,8 @@ Route::middleware('auth')->group(function () {
     )->name('job-applications.status');
 
 });
+
+
 
 
 require __DIR__.'/auth.php';
