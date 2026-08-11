@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreJobApplicationRequest;
 use App\Models\Job;
 use App\Models\JobApplication;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 class JobApplicationController extends Controller
 {
@@ -73,5 +73,38 @@ class JobApplicationController extends Controller
             'success',
             'Application status updated successfully.'
         );
+    }
+
+    public function store(
+        StoreJobApplicationRequest $request,
+        Job $job
+    ): RedirectResponse {
+        $user = auth()->user();
+
+        // Prevent applying for an inactive job.
+        if (!$job->is_active) {
+            return back()->with('error', 'This job is no longer accepting applications.');
+        }
+
+        // Prevent duplicate applications.
+        $alreadyApplied = JobApplication::where('job_id', $job->id)
+            ->where('user_id', $user->id)
+            ->exists();
+
+        if ($alreadyApplied) {
+            return back()->with('error', 'You have already applied for this job.');
+        }
+
+        JobApplication::create([
+            'job_id' => $job->id,
+            'user_id' => $user->id,
+            'resume' => $request->validated()['resume'],
+            'cover_letter' => $request->validated()['cover_letter'] ?? null,
+            'status' => 'pending',
+        ]);
+
+        return redirect()
+            ->route('jobs.show', $job)
+            ->with('success', 'Your application has been submitted successfully.');
     }
 }

@@ -276,61 +276,58 @@
         </h2>
 
         <form
-            method="POST"
-            action="{{ route('jobs.apply', $job) }}"
-            enctype="multipart/form-data">
+    action="{{ route('jobs.apply', $job) }}"
+    method="POST"
+    enctype="multipart/form-data"
+>
+    @csrf
 
-            @csrf
+    <div class="mb-5">
+        <label class="block mb-2 font-medium">
+            Resume
+        </label>
 
-            <div class="mb-5">
-                <label class="mb-2 block font-medium">
-                    Resume <span class="text-red-500">*</span>
-                </label>
+        <input
+            type="file"
+            name="resume"
+            accept=".pdf,.doc,.docx"
+            class="w-full border rounded-lg p-3"
+            required
+        >
 
-                <input
-                    type="file"
-                    name="resume"
-                    accept=".pdf,.doc,.docx"
-                    class="w-full rounded-lg border p-3">
+        @error('resume')
+            <p class="text-red-500 text-sm mt-1">
+                {{ $message }}
+            </p>
+        @enderror
+    </div>
 
-                @error('resume')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                @enderror
+    <div class="mb-5">
+        <label class="block mb-2 font-medium">
+            Cover Letter
+        </label>
 
-                <p class="mt-1 text-sm text-gray-500">
-                    PDF, DOC or DOCX. Maximum 5 MB.
-                </p>
-            </div>
+        <textarea
+            name="cover_letter"
+            rows="6"
+            class="w-full border rounded-lg p-3"
+            placeholder="Tell the employer why you are suitable for this job..."
+        >{{ old('cover_letter') }}</textarea>
 
-            <div class="mb-5">
-                <label class="mb-2 block font-medium">
-                    Cover Letter
-                </label>
+        @error('cover_letter')
+            <p class="text-red-500 text-sm mt-1">
+                {{ $message }}
+            </p>
+        @enderror
+    </div>
 
-                <textarea
-                    name="cover_letter"
-                    rows="6"
-                    class="w-full rounded-lg border p-3"
-                    placeholder="Tell the employer why you are suitable for this position...">{{ old('cover_letter') }}</textarea>
-
-                @error('cover_letter')
-                    <p class="mt-1 text-sm text-red-600">
-                        {{ $message }}
-                    </p>
-                @enderror
-            </div>
-
-            <button
-                type="submit"
-                class="rounded-lg bg-blue-600 px-6 py-3 font-medium text-white hover:bg-blue-700">
-
-                Apply Now
-
-            </button>
-
-        </form>
+    <button
+        type="submit"
+        class="rounded-lg bg-blue-600 px-6 py-3 text-white hover:bg-blue-700"
+    >
+        Apply for this Job
+    </button>
+</form>
 
     </div>
 
