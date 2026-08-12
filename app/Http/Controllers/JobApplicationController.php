@@ -107,31 +107,67 @@ public function index(Request $request): View
         );
     }
 
+    public function employerIndex()
+{
+    $applications = JobApplication::with([
+        'job.company',
+        'user',
+    ])
+    ->whereHas('job.company', function ($query) {
+        $query->where('user_id', auth()->id());
+    })
+    ->latest()
+    ->paginate(10);
+
+    return view(
+        'employer.applications.index',
+        compact('applications')
+    );
+}
+
+public function employerShow(JobApplication $application)
+{
+    $this->authorize('view', $application);
+
+    $application->load([
+        'job.company',
+        'job.category',
+        'user',
+    ]);
+
+    return view(
+        'employer.applications.show',
+        compact('application')
+    );
+}
+
     /**
      * Update application status.
      */
     public function updateStatus(
-        Request $request,
-        JobApplication $jobApplication
-    ) {
-        $this->authorize('update', $jobApplication);
+    Request $request,
+    JobApplication $application
+) {
+    $this->authorize('update', $application);
 
-        $validated = $request->validate([
-            'status' => [
-                'required',
-                'in:pending,shortlisted,rejected,hired',
-            ],
-        ]);
+    $validated = $request->validate([
+        'status' => [
+            'required',
+            'in:pending,reviewing,shortlisted,rejected,hired',
+        ],
+    ]);
 
-        $jobApplication->update([
-            'status' => $validated['status'],
-        ]);
+    $application->update([
+        'status' => $validated['status'],
+    ]);
 
-        return back()->with(
+    return redirect()
+        ->route('employer.applications.show', $application)
+        ->with(
             'success',
             'Application status updated successfully.'
         );
-    }
+}
 
     public function store(
         StoreJobApplicationRequest $request,

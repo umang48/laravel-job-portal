@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Models\JobApplication;
 use App\Models\User;
 
+
 class JobApplicationPolicy
 {
     /**
@@ -15,20 +16,21 @@ class JobApplicationPolicy
         return $user->company !== null;
     }
 
-    /**
-     * Determine whether the user can view the application.
-     */
-    public function view(User $user, JobApplication $jobApplication): bool
+    public function view(User $user, JobApplication $application): bool
     {
-        return $this->ownsJob($user, $jobApplication);
+        return $application->job
+            ->company
+            ->user_id === $user->id;
     }
 
     /**
      * Determine whether the user can update the application status.
      */
-    public function update(User $user, JobApplication $jobApplication): bool
+    public function update(User $user, JobApplication $application): bool
     {
-        return $this->ownsJob($user, $jobApplication);
+        return $application->job
+            ->company
+            ->user_id === $user->id;
     }
 
     /**

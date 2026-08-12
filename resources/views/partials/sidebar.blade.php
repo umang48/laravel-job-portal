@@ -28,6 +28,14 @@
     </a>
 
     <a
+    href="{{ route('employer.applications.index') }}"
+    class="block px-6 py-3 hover:bg-slate-800">
+
+    Applications
+
+</a>
+
+    <a
         href="{{ route('job-categories.index') }}"
         class="block px-6 py-3 hover:bg-slate-800"
     >

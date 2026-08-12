@@ -63,8 +63,30 @@ Route::middleware('auth')->group(function () {
         [JobApplicationController::class, 'updateStatus']
     )->name('job-applications.status');
 
+    
+
 });
 
+
+Route::middleware('auth')->group(function () {
+
+    // Employer application management
+    Route::get(
+        '/employer/applications',
+        [JobApplicationController::class, 'employerIndex']
+    )->name('employer.applications.index');
+
+    Route::get(
+        '/employer/applications/{application}',
+        [JobApplicationController::class, 'employerShow']
+    )->name('employer.applications.show');
+
+    Route::patch(
+        '/employer/applications/{application}/status',
+        [JobApplicationController::class, 'updateStatus']
+    )->name('employer.applications.status');
+
+});
 
 
 
