@@ -579,11 +579,11 @@
                     </div>
 
                     <a
-                        href="#recent-applications"
-                        class="inline-block text-sm text-blue-600 mt-4 hover:underline"
-                    >
-                        Review Applications →
-                    </a>
+    href="{{ route('job-applications.index', ['status' => 'pending']) }}"
+    class="inline-block text-sm text-blue-600 mt-4 hover:underline"
+>
+    Review Applications →
+</a>
 
                 </div>
 
@@ -612,11 +612,12 @@
                     </div>
 
                     <a
-                        href="#"
-                        class="text-sm text-blue-600 hover:underline"
-                    >
-                        View All
-                    </a>
+    href="{{ route('job-applications.index') }}"
+    class="text-sm text-blue-600 hover:underline"
+>
+    View All
+</a>
+
 
                 </div>
 

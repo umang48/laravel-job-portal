@@ -7,28 +7,86 @@ use App\Models\Job;
 use App\Models\JobApplication;
 use Illuminate\Http\RedirectResponse;
 
+use App\Models\Company;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
+
 class JobApplicationController extends Controller
 {
-    /**
-     * Display applications for a job.
-     */
-    public function index(Job $job)
-    {
-        abort_unless(
-            $job->company->user_id === auth()->id(),
-            403
-        );
+   /**
+ * Display applications received for employer jobs.
+ */
+public function index(Request $request): View
+{
+    $user = auth()->user();
 
-        $applications = $job->applications()
-            ->with('user')
-            ->latest()
-            ->paginate(10);
+    $companyIds = $user->companies()->pluck('id');
 
-        return view(
-            'job-applications.index',
-            compact('job', 'applications')
-        );
+    $jobs = Job::whereIn('company_id', $companyIds)
+        ->orderBy('title')
+        ->get();
+
+    $applicationsQuery = JobApplication::query()
+        ->whereHas('job', function ($query) use ($companyIds) {
+            $query->whereIn('company_id', $companyIds);
+        })
+        ->with([
+            'user',
+            'job.company',
+        ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Search
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('search')) {
+
+        $search = $request->search;
+
+        $applicationsQuery->whereHas('user', function ($query) use ($search) {
+
+            $query->where('name', 'like', "%{$search}%")
+                ->orWhere('email', 'like', "%{$search}%");
+
+        });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Job Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('job_id')) {
+
+        $applicationsQuery->where('job_id', $request->job_id);
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Status Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('status')) {
+
+        $applicationsQuery->where('status', $request->status);
+
+    }
+
+    $applications = $applicationsQuery
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    return view('job-applications.index', compact(
+        'applications',
+        'jobs'
+    ));
+}
 
     /**
      * Display an application.

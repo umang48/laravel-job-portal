@@ -46,6 +46,8 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+
+
     Route::get(
         '/jobs/{job}/applications',
         [JobApplicationController::class, 'index']
