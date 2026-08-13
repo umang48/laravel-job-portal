@@ -27,6 +27,13 @@
         Jobs
     </a>
 
+    <a href="{{ route('applications.mine') }}"
+   class="block px-6 py-3 hover:bg-slate-800">
+
+    My Applications
+
+</a>
+
     <a
     href="{{ route('employer.applications.index') }}"
     class="block px-6 py-3 hover:bg-slate-800">
@@ -48,6 +55,8 @@
     >
         My Applications
     </a>
+
+    
 
 </nav>
 

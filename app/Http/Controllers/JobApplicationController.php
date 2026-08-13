@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 
+
 class JobApplicationController extends Controller
 {
    /**
@@ -225,4 +226,38 @@ public function employerShow(JobApplication $application)
             ->route('jobs.show', $job)
             ->with('success', 'Your application has been submitted successfully.');
     }
+
+
+    public function myApplications()
+{
+    $applications = JobApplication::with([
+        'job.company',
+        'job.category',
+    ])
+    ->where('user_id', auth()->id())
+    ->latest()
+    ->paginate(10);
+
+    return view('applications.mine', compact('applications'));
+}
+
+public function showMyApplication(JobApplication $application)
+{
+    abort_unless(
+        $application->user_id === auth()->id(),
+        403
+    );
+
+    $application->load([
+        'job.company',
+        'job.category',
+        'statusHistories.user',
+    ]);
+
+    return view(
+        'applications.show',
+        compact('application')
+    );
+}
+
 }

@@ -89,5 +89,19 @@ Route::middleware('auth')->group(function () {
 });
 
 
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/my-applications', [
+        JobApplicationController::class,
+        'myApplications'
+    ])->name('applications.mine');
+
+    Route::get('/my-applications/{application}', [
+        JobApplicationController::class,
+        'showMyApplication'
+    ])->name('applications.mine.show');
+
+});
+
 
 require __DIR__.'/auth.php';
