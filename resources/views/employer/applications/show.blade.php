@@ -272,4 +272,98 @@
 
 </div>
 
+{{-- Application Status History --}}
+<div class="bg-white rounded-xl shadow p-6 mt-6">
+
+    <h2 class="text-lg font-semibold mb-6">
+        Application Status History
+    </h2>
+
+    @if($application->statusHistories->count())
+
+        <div class="relative">
+
+            <div class="space-y-6">
+
+                @foreach($application->statusHistories as $history)
+
+                    <div class="flex gap-4">
+
+                        {{-- Timeline Dot --}}
+                        <div class="flex flex-col items-center">
+
+                            <div class="w-3 h-3 rounded-full bg-blue-600">
+                            </div>
+
+                            @if(!$loop->last)
+
+                                <div class="w-px h-full bg-gray-200">
+                                </div>
+
+                            @endif
+
+                        </div>
+
+                        {{-- History Content --}}
+                        <div class="pb-6">
+
+                            <div class="flex items-center gap-2">
+
+                                <span
+                                    class="px-3 py-1 rounded-full
+                                           text-xs font-medium
+                                           bg-gray-100 text-gray-700">
+
+                                    {{ ucfirst($history->old_status ?? 'Initial') }}
+
+                                </span>
+
+                                <span class="text-gray-400">
+                                    →
+                                </span>
+
+                                <span
+                                    class="px-3 py-1 rounded-full
+                                           text-xs font-medium
+                                           bg-blue-100 text-blue-700">
+
+                                    {{ ucfirst($history->new_status) }}
+
+                                </span>
+
+                            </div>
+
+                            <p class="text-sm text-gray-500 mt-2">
+
+                                Changed by
+                                <span class="font-medium text-gray-700">
+                                    {{ $history->changedBy->name }}
+                                </span>
+
+                                on
+
+                                {{ $history->created_at->format('d M Y, h:i A') }}
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
+
+    @else
+
+        <p class="text-gray-500">
+            No status changes have been recorded yet.
+        </p>
+
+    @endif
+
+</div>
+
 @endsection

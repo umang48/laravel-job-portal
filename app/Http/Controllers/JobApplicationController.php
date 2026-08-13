@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class JobApplicationController extends Controller
 {
@@ -133,6 +134,7 @@ public function employerShow(JobApplication $application)
         'job.company',
         'job.category',
         'user',
+        'statusHistories.changedBy',
     ]);
 
     return view(
@@ -157,12 +159,34 @@ public function employerShow(JobApplication $application)
         ],
     ]);
 
-    $application->update([
-        'status' => $validated['status'],
-    ]);
+    $oldStatus = $application->status;
+    $newStatus = $validated['status'];
+
+    if ($oldStatus !== $newStatus) {
+
+        DB::transaction(function () use (
+            $application,
+            $oldStatus,
+            $newStatus
+        ) {
+
+            $application->update([
+                'status' => $newStatus,
+            ]);
+
+            $application->statusHistories()->create([
+                'changed_by' => auth()->id(),
+                'old_status' => $oldStatus,
+                'new_status' => $newStatus,
+            ]);
+        });
+    }
 
     return redirect()
-        ->route('employer.applications.show', $application)
+        ->route(
+            'employer.applications.show',
+            $application
+        )
         ->with(
             'success',
             'Application status updated successfully.'
