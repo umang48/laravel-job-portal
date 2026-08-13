@@ -8,7 +8,7 @@ use App\Http\Controllers\JobCategoryController;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\MyApplicationController;
-
+use App\Http\Controllers\SavedJobController;
 
 
 Route::view('/', 'pages.home.index');
@@ -100,6 +100,26 @@ Route::middleware(['auth'])->group(function () {
         JobApplicationController::class,
         'showMyApplication'
     ])->name('applications.mine.show');
+
+});
+
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/saved-jobs', [
+        SavedJobController::class,
+        'index'
+    ])->name('saved-jobs.index');
+
+    Route::post('/jobs/{job}/save', [
+        SavedJobController::class,
+        'store'
+    ])->name('jobs.save');
+
+    Route::delete('/jobs/{job}/save', [
+        SavedJobController::class,
+        'destroy'
+    ])->name('jobs.unsave');
 
 });
 

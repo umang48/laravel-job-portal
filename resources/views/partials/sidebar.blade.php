@@ -27,6 +27,18 @@
         Jobs
     </a>
 
+    @auth
+
+    <a
+        href="{{ route('saved-jobs.index') }}"
+        class="block px-6 py-3 hover:bg-slate-800">
+
+        ⭐ Saved Jobs
+
+    </a>
+
+@endauth
+
     <a href="{{ route('applications.mine') }}"
    class="block px-6 py-3 hover:bg-slate-800">
 

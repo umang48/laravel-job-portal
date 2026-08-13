@@ -17,55 +17,27 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $query = Job::with([
-            'company',
-            'category',
+    public function index()
+{
+    $query = Job::with([
+        'company',
+        'category',
+    ]);
+
+    if (auth()->check()) {
+        $query->withExists([
+            'savedJobs as is_saved' => function ($query) {
+                $query->where('user_id', auth()->id());
+            }
         ]);
-
-        // Search
-        if ($request->filled('search')) {
-            $search = $request->search;
-
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('location', 'like', "%{$search}%")
-                    ->orWhereHas('company', function ($companyQuery) use ($search) {
-                        $companyQuery->where('name', 'like', "%{$search}%");
-                    });
-            });
-        }
-
-        // Category filter
-        if ($request->filled('category')) {
-            $query->where('job_category_id', $request->category);
-        }
-
-        // Job type filter
-        if ($request->filled('job_type')) {
-            $query->where('job_type', $request->job_type);
-        }
-
-        // Location filter
-        if ($request->filled('location')) {
-            $query->where('location', 'like', '%' . $request->location . '%');
-        }
-
-        $jobs = $query
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
-
-        $categories = JobCategory::where('is_active', true)
-            ->orderBy('name')
-            ->get();
-
-        return view('jobs.index', compact(
-            'jobs',
-            'categories'
-        ));
     }
+
+    $jobs = $query
+        ->latest()
+        ->paginate(10);
+
+    return view('jobs.index', compact('jobs'));
+}
 
     /**
      * Show the form for creating a new resource.

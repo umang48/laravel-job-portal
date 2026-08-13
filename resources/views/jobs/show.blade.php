@@ -32,6 +32,67 @@
                             {{ $job->title }}
                         </h1>
 
+                        @auth
+
+    @php
+        $isSaved = \App\Models\SavedJob::where('user_id', auth()->id())
+            ->where('job_id', $job->id)
+            ->exists();
+    @endphp
+
+    <div class="mt-5">
+
+        @if($isSaved)
+
+            <form
+                method="POST"
+                action="{{ route('jobs.unsave', $job) }}">
+
+                @csrf
+                @method('DELETE')
+
+                <button
+                    type="submit"
+                    class="inline-flex items-center gap-2
+                           rounded-lg border border-red-300
+                           bg-red-50 px-5 py-3
+                           font-medium text-red-700
+                           hover:bg-red-100">
+
+                    ★ Remove from Saved Jobs
+
+                </button>
+
+            </form>
+
+        @else
+
+            <form
+                method="POST"
+                action="{{ route('jobs.save', $job) }}">
+
+                @csrf
+
+                <button
+                    type="submit"
+                    class="inline-flex items-center gap-2
+                           rounded-lg border border-blue-300
+                           bg-blue-50 px-5 py-3
+                           font-medium text-blue-700
+                           hover:bg-blue-100">
+
+                    ☆ Save Job
+
+                </button>
+
+            </form>
+
+        @endif
+
+    </div>
+
+@endauth
+
                         <p class="mt-2 text-lg text-gray-600">
                             {{ $job->company->name }}
                         </p>
