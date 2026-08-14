@@ -39,22 +39,23 @@
 
     <form method="GET" action="{{ route('jobs.index') }}">
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
 
             {{-- Keyword --}}
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">
-                    Keyword
-                </label>
+            <div class="sm:col-span-2">
+    <label class="block text-sm font-medium text-gray-700 mb-2">
+        Keyword
+    </label>
 
-                <input
-                    type="text"
-                    name="keyword"
-                    value="{{ request('keyword') }}"
-                    placeholder="PHP, Laravel, React..."
-                    class="w-full rounded-lg border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-blue-500">
-            </div>
+    <input
+        type="text"
+        name="keyword"
+        value="{{ request('keyword') }}"
+        placeholder="Search PHP, Laravel, React..."
+        class="w-full rounded-lg border-gray-300 px-4 py-3
+               focus:border-blue-500 focus:ring-blue-500">
+</div>
 
 
             {{-- Category --}}
@@ -251,6 +252,160 @@
         </div>
 
     </form>
+
+</div>
+
+
+@if(
+    request()->filled('keyword') ||
+    request()->filled('category') ||
+    request()->filled('location') ||
+    request()->filled('job_type') ||
+    request()->filled('experience') ||
+    request()->filled('min_salary') ||
+    request()->filled('max_salary')
+)
+
+    <div class="flex flex-wrap items-center gap-2 mt-5 pt-5 border-t">
+
+        <span class="text-sm font-medium text-gray-600">
+            Active filters:
+        </span>
+
+        @if(request('keyword'))
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
+                Keyword: {{ request('keyword') }}
+            </span>
+        @endif
+
+        @if(request('location'))
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
+                Location: {{ request('location') }}
+            </span>
+        @endif
+
+        @if(request('job_type'))
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
+                {{ request('job_type') }}
+            </span>
+        @endif
+
+        @if(request('experience'))
+            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-sm text-blue-700">
+                {{ request('experience') }}
+            </span>
+        @endif
+
+        @if(request('min_salary'))
+            <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+                Min ₹{{ number_format(request('min_salary')) }}
+            </span>
+        @endif
+
+        @if(request('max_salary'))
+            <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
+                Max ₹{{ number_format(request('max_salary')) }}
+            </span>
+        @endif
+
+        <a
+            href="{{ route('jobs.index') }}"
+            class="text-sm text-red-600 hover:text-red-700 ml-2">
+
+            Clear all
+
+        </a>
+
+    </div>
+
+@endif
+
+
+
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+
+    <div>
+        <h2 class="text-xl font-semibold text-gray-800">
+            Available Jobs
+        </h2>
+
+        <p class="text-sm text-gray-500 mt-1">
+            {{ $jobs->total() }} jobs found
+        </p>
+    </div>
+
+    <div class="flex items-center gap-3">
+
+        <label
+            for="sort"
+            class="text-sm font-medium text-gray-600">
+
+            Sort by:
+
+        </label>
+
+        <form method="GET" action="{{ route('jobs.index') }}">
+
+            {{-- Preserve existing filters --}}
+
+            @foreach(request()->except('sort', 'page') as $key => $value)
+
+                @if(is_array($value))
+
+                    @foreach($value as $item)
+
+                        <input
+                            type="hidden"
+                            name="{{ $key }}[]"
+                            value="{{ $item }}">
+
+                    @endforeach
+
+                @else
+
+                    <input
+                        type="hidden"
+                        name="{{ $key }}"
+                        value="{{ $value }}">
+
+                @endif
+
+            @endforeach
+
+            <select
+                name="sort"
+                onchange="this.form.submit()"
+                class="rounded-lg border-gray-300 px-4 py-2.5 text-sm focus:border-blue-500 focus:ring-blue-500">
+
+                <option
+                    value="relevance"
+                    @selected(request('sort', 'latest') === 'relevance')>
+                    Relevance
+                </option>
+
+                <option
+                    value="latest"
+                    @selected(request('sort', 'latest') === 'latest')>
+                    Latest
+                </option>
+
+                <option
+                    value="salary_high"
+                    @selected(request('sort') === 'salary_high')>
+                    Salary: High to Low
+                </option>
+
+                <option
+                    value="salary_low"
+                    @selected(request('sort') === 'salary_low')>
+                    Salary: Low to High
+                </option>
+
+            </select>
+
+        </form>
+
+    </div>
 
 </div>
 

@@ -102,24 +102,77 @@ class JobController extends Controller
     }
 
     /*
-    |--------------------------------------------------------------------------
-    | Results
-    |--------------------------------------------------------------------------
-    */
+|--------------------------------------------------------------------------
+| Sorting
+|--------------------------------------------------------------------------
+*/
 
-    $jobs = $query
-        ->latest()
-        ->paginate(10)
-        ->withQueryString();
+$sort = $request->get('sort', 'latest');
 
-    $categories = JobCategory::where('is_active', true)
-        ->orderBy('name')
-        ->get();
+switch ($sort) {
 
-    return view('jobs.index', compact(
-        'jobs',
-        'categories'
-    ));
+    case 'salary_high':
+        $query->orderByDesc('salary_max')
+            ->orderByDesc('salary_min');
+        break;
+
+    case 'salary_low':
+        $query->orderByRaw('COALESCE(salary_min, 0) ASC')
+            ->orderByRaw('COALESCE(salary_max, 0) ASC');
+        break;
+
+    case 'relevance':
+        /*
+         * Basic relevance:
+         * Jobs matching the keyword in title are ranked first.
+         */
+        if ($request->filled('keyword')) {
+
+            $keyword = $request->keyword;
+
+            $query->orderByRaw(
+                "CASE
+                    WHEN title LIKE ? THEN 1
+                    WHEN title LIKE ? THEN 2
+                    WHEN description LIKE ? THEN 3
+                    ELSE 4
+                END",
+                [
+                    "%{$keyword}%",
+                    "{$keyword}%",
+                    "%{$keyword}%"
+                ]
+            );
+        }
+
+        $query->latest();
+        break;
+
+    case 'latest':
+    default:
+        $query->latest();
+        break;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Pagination
+|--------------------------------------------------------------------------
+*/
+
+$jobs = $query
+    ->paginate(10)
+    ->withQueryString();
+
+$categories = JobCategory::where('is_active', true)
+    ->orderBy('name')
+    ->get();
+
+return view('jobs.index', compact(
+    'jobs',
+    'categories'
+));
 }
 
     /**
