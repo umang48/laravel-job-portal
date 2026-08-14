@@ -21,116 +21,236 @@
 
     </div>
 
-    <div class="bg-white rounded-lg shadow p-6 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border p-6 mb-6">
 
-<form
-    method="GET"
-    action="{{ route('jobs.index') }}"
-    class="bg-white rounded-xl shadow-sm p-5 mb-6">
+    <div class="flex items-center justify-between mb-5">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-
-        {{-- Search --}}
         <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-                Search
-            </label>
+            <h2 class="text-lg font-semibold text-gray-800">
+                Search Jobs
+            </h2>
 
-            <input
-                type="text"
-                name="search"
-                value="{{ request('search') }}"
-                placeholder="Job title or company"
-                class="w-full rounded-lg border-gray-300 px-4 py-2">
-        </div>
-
-        {{-- Category --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-                Category
-            </label>
-
-            <select
-                name="category"
-                class="w-full rounded-lg border-gray-300 px-4 py-2">
-
-                <option value="">All Categories</option>
-
-                @foreach($categories as $category)
-                    <option
-                        value="{{ $category->id }}"
-                        @selected(request('category') == $category->id)>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-
-            </select>
-        </div>
-
-        {{-- Job Type --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-                Job Type
-            </label>
-
-            <select
-                name="job_type"
-                class="w-full rounded-lg border-gray-300 px-4 py-2">
-
-                <option value="">All Types</option>
-
-                @foreach([
-                    'Full Time',
-                    'Part Time',
-                    'Contract',
-                    'Internship',
-                    'Remote'
-                ] as $type)
-
-                    <option
-                        value="{{ $type }}"
-                        @selected(request('job_type') == $type)>
-                        {{ $type }}
-                    </option>
-
-                @endforeach
-
-            </select>
-        </div>
-
-        {{-- Location --}}
-        <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">
-                Location
-            </label>
-
-            <input
-                type="text"
-                name="location"
-                value="{{ request('location') }}"
-                placeholder="Ahmedabad"
-                class="w-full rounded-lg border-gray-300 px-4 py-2">
+            <p class="text-sm text-gray-500">
+                Find jobs matching your requirements.
+            </p>
         </div>
 
     </div>
 
-    <div class="flex gap-3 mt-4">
+    <form method="GET" action="{{ route('jobs.index') }}">
 
-        <button
-            type="submit"
-            class="rounded-lg bg-blue-600 px-5 py-2 text-white hover:bg-blue-700">
-            Search
-        </button>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
-        <a
-            href="{{ route('jobs.index') }}"
-            class="rounded-lg bg-gray-200 px-5 py-2 text-gray-700 hover:bg-gray-300">
-            Clear
-        </a>
+            {{-- Keyword --}}
 
-    </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Keyword
+                </label>
 
-</form>
+                <input
+                    type="text"
+                    name="keyword"
+                    value="{{ request('keyword') }}"
+                    placeholder="PHP, Laravel, React..."
+                    class="w-full rounded-lg border-gray-300 px-4 py-3 focus:border-blue-500 focus:ring-blue-500">
+            </div>
+
+
+            {{-- Category --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Category
+                </label>
+
+                <select
+                    name="category"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+                    <option value="">
+                        All Categories
+                    </option>
+
+                    @foreach($categories as $category)
+
+                        <option
+                            value="{{ $category->id }}"
+                            @selected(request('category') == $category->id)>
+
+                            {{ $category->name }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+
+            {{-- Location --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    name="location"
+                    value="{{ request('location') }}"
+                    placeholder="Ahmedabad"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+            </div>
+
+
+            {{-- Job Type --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Job Type
+                </label>
+
+                <select
+                    name="job_type"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+                    <option value="">
+                        All Job Types
+                    </option>
+
+                    @foreach([
+                        'Full Time',
+                        'Part Time',
+                        'Contract',
+                        'Internship',
+                        'Remote'
+                    ] as $type)
+
+                        <option
+                            value="{{ $type }}"
+                            @selected(request('job_type') === $type)>
+
+                            {{ $type }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+
+            {{-- Experience --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Experience
+                </label>
+
+                <select
+                    name="experience"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+                    <option value="">
+                        Any Experience
+                    </option>
+
+                    @foreach([
+                        'Fresher',
+                        '0-1 Years',
+                        '1-3 Years',
+                        '3-5 Years',
+                        '5-10 Years',
+                        '10+ Years'
+                    ] as $experience)
+
+                        <option
+                            value="{{ $experience }}"
+                            @selected(request('experience') === $experience)>
+
+                            {{ $experience }}
+
+                        </option>
+
+                    @endforeach
+
+                </select>
+
+            </div>
+
+
+            {{-- Minimum Salary --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Minimum Salary
+                </label>
+
+                <input
+                    type="number"
+                    name="min_salary"
+                    value="{{ request('min_salary') }}"
+                    placeholder="30000"
+                    min="0"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+            </div>
+
+
+            {{-- Maximum Salary --}}
+
+            <div>
+
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Maximum Salary
+                </label>
+
+                <input
+                    type="number"
+                    name="max_salary"
+                    value="{{ request('max_salary') }}"
+                    placeholder="100000"
+                    min="0"
+                    class="w-full rounded-lg border-gray-300 px-4 py-3">
+
+            </div>
+
+        </div>
+
+
+        {{-- Buttons --}}
+
+        <div class="flex items-center gap-3 mt-6">
+
+            <button
+                type="submit"
+                class="rounded-lg bg-blue-600 px-6 py-3 text-white font-medium hover:bg-blue-700">
+
+                Search Jobs
+
+            </button>
+
+
+            <a
+                href="{{ route('jobs.index') }}"
+                class="rounded-lg bg-gray-200 px-6 py-3 text-gray-700 font-medium hover:bg-gray-300">
+
+                Clear Filters
+
+            </a>
+
+        </div>
+
+    </form>
 
 </div>
 

@@ -17,26 +17,109 @@ class JobController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
 {
     $query = Job::with([
         'company',
-        'category',
-    ]);
+        'category'
+    ])
+    ->where('is_active', true);
 
-    if (auth()->check()) {
-        $query->withExists([
-            'savedJobs as is_saved' => function ($query) {
-                $query->where('user_id', auth()->id());
-            }
-        ]);
+    /*
+    |--------------------------------------------------------------------------
+    | Keyword Search
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('keyword')) {
+        $keyword = $request->keyword;
+
+        $query->where(function ($q) use ($keyword) {
+            $q->where('title', 'like', "%{$keyword}%")
+                ->orWhere('description', 'like', "%{$keyword}%")
+                ->orWhere('location', 'like', "%{$keyword}%");
+        });
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Category
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('category')) {
+        $query->where('job_category_id', $request->category);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Location
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('location')) {
+        $query->where('location', 'like', '%' . $request->location . '%');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Job Type
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('job_type')) {
+        $query->where('job_type', $request->job_type);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Experience
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('experience')) {
+        $query->where('experience', 'like', '%' . $request->experience . '%');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Salary
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('min_salary')) {
+        $query->where(function ($q) use ($request) {
+            $q->whereNull('salary_max')
+                ->orWhere('salary_max', '>=', $request->min_salary);
+        });
+    }
+
+    if ($request->filled('max_salary')) {
+        $query->where(function ($q) use ($request) {
+            $q->whereNull('salary_min')
+                ->orWhere('salary_min', '<=', $request->max_salary);
+        });
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Results
+    |--------------------------------------------------------------------------
+    */
 
     $jobs = $query
         ->latest()
-        ->paginate(10);
+        ->paginate(10)
+        ->withQueryString();
 
-    return view('jobs.index', compact('jobs'));
+    $categories = JobCategory::where('is_active', true)
+        ->orderBy('name')
+        ->get();
+
+    return view('jobs.index', compact(
+        'jobs',
+        'categories'
+    ));
 }
 
     /**
