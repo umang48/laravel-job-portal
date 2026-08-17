@@ -67,4 +67,14 @@ class ResumeController extends Controller
             'Resume deleted successfully.'
         );
     }
+
+    public function download(Resume $resume)
+{
+    $this->authorize('view', $resume);
+
+    return Storage::disk('public')->download(
+        $resume->file_path,
+        $resume->file_name
+    );
+}
 }

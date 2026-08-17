@@ -93,21 +93,21 @@ public function index(Request $request): View
     /**
      * Display an application.
      */
-    public function show(JobApplication $jobApplication)
-    {
-        $this->authorize('view', $jobApplication);
+   public function show(JobApplication $jobApplication)
+{
+    $this->authorize('view', $jobApplication);
 
-        $jobApplication->load([
-            'job.company',
-            'job.category',
-            'user',
-        ]);
+    $jobApplication->load([
+        'user.resume',
+        'job.company',
+        'job.category',
+    ]);
 
-        return view(
-            'job-applications.show',
-            compact('jobApplication')
-        );
-    }
+    return view(
+        'employer.applications.show',
+        compact('jobApplication')
+    );
+}
 
     public function employerIndex()
 {

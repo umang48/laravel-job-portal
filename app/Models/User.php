@@ -71,4 +71,9 @@ public function resume(): HasOne
     return $this->hasOne(Resume::class);
 }
 
+public function applications()
+{
+    return $this->hasMany(JobApplication::class);
+}
+
 }

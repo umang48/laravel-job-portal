@@ -13,6 +13,7 @@ use App\Http\Controllers\JobSeekerProfileController;
 use App\Http\Controllers\ResumeController;
 
 
+
 Route::view('/', 'pages.home.index');
 
 Route::middleware('auth')->group(function () {
@@ -146,6 +147,15 @@ Route::delete('/job-seeker/resume', [
     ResumeController::class,
     'destroy'
 ])->name('job-seeker.resume.destroy');
+
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/resumes/{resume}/download', [
+        ResumeController::class,
+        'download'
+    ])->name('resumes.download');
 
 });
 

@@ -99,13 +99,12 @@
             </h2>
 
             <a
-                href="{{ asset('storage/' . $jobApplication->resume) }}"
-                target="_blank"
-                class="inline-block rounded-lg bg-blue-600 px-5 py-3 text-white hover:bg-blue-700">
+    href="{{ route('resumes.download', $jobApplication->user->resume) }}"
+    class="rounded-lg bg-blue-600 px-5 py-2.5 text-white hover:bg-blue-700">
 
-                View / Download Resume
+    Download Resume
 
-            </a>
+</a>
 
         </div>
 
