@@ -9,6 +9,8 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\MyApplicationController;
 use App\Http\Controllers\SavedJobController;
+use App\Http\Controllers\JobSeekerProfileController;
+use App\Http\Controllers\ResumeController;
 
 
 Route::view('/', 'pages.home.index');
@@ -120,6 +122,30 @@ Route::middleware(['auth'])->group(function () {
         SavedJobController::class,
         'destroy'
     ])->name('jobs.unsave');
+
+});
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/job-seeker/profile', [
+        JobSeekerProfileController::class,
+        'edit'
+    ])->name('job-seeker.profile.edit');
+
+    Route::put('/job-seeker/profile', [
+        JobSeekerProfileController::class,
+        'update'
+    ])->name('job-seeker.profile.update');
+
+    Route::post('/job-seeker/resume', [
+    ResumeController::class,
+    'store'
+])->name('job-seeker.resume.store');
+
+Route::delete('/job-seeker/resume', [
+    ResumeController::class,
+    'destroy'
+])->name('job-seeker.resume.destroy');
 
 });
 

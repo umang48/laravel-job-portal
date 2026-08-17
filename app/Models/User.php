@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use App\Models\Company;
+use App\Models\Resume;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -64,6 +65,10 @@ public function jobApplications(): HasMany
 public function savedJobs(): HasMany
 {
     return $this->hasMany(SavedJob::class);
+}
+public function resume(): HasOne
+{
+    return $this->hasOne(Resume::class);
 }
 
 }
