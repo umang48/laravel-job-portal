@@ -76,4 +76,26 @@ public function applications()
     return $this->hasMany(JobApplication::class);
 }
 
+public function profileCompletion(): int
+{
+    $fields = [
+        'name' => !empty($this->name),
+        'phone' => !empty($this->phone),
+        'city' => !empty($this->city),
+        'bio' => !empty($this->bio),
+        'skills' => !empty($this->skills),
+        'experience' => !empty($this->experience),
+        'resume' => $this->resume()->exists(),
+    ];
+
+    return (int) round(
+        collect($fields)->filter()->count() / count($fields) * 100
+    );
+}
+
+public function companies(): HasMany
+{
+    return $this->hasMany(Company::class);
+}
+
 }

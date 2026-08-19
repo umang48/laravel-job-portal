@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreJobApplicationRequest;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Job;
 use App\Models\JobApplication;
 use Illuminate\Http\RedirectResponse;
@@ -13,8 +14,10 @@ use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
 
 
+
 class JobApplicationController extends Controller
 {
+use AuthorizesRequests;
    /**
  * Display applications received for employer jobs.
  */
@@ -132,11 +135,11 @@ public function employerShow(JobApplication $application)
     $this->authorize('view', $application);
 
     $application->load([
-        'job.company',
-        'job.category',
-        'user',
-        'statusHistories.changedBy',
-    ]);
+    'job.company',
+    'job.category',
+    'user',
+    'statusHistories.changedBy',
+]);
 
     return view(
         'employer.applications.show',
@@ -247,13 +250,12 @@ public function showMyApplication(JobApplication $application)
         $application->user_id === auth()->id(),
         403
     );
-
-    $application->load([
-        'job.company',
-        'job.category',
-        'statusHistories.user',
-    ]);
-
+$application->load([
+    'job.company',
+    'job.category',
+    'user',
+    'statusHistories.changedBy',
+]);
     return view(
         'applications.show',
         compact('application')

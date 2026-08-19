@@ -32,13 +32,23 @@ class DashboardController extends Controller
             $query->whereIn('company_id', $companyIds);
         });
 
+        // Total number of applications.
+        $applicationsCount = (clone $applicationsQuery)->count();
+
+        // Total number of unique applicants.
         $totalApplicants = (clone $applicationsQuery)
             ->distinct('user_id')
             ->count('user_id');
 
+        // Pending applications.
         $pendingApplications = (clone $applicationsQuery)
             ->where('status', 'pending')
             ->count();
+
+
+$pendingCount = (clone $applicationsQuery)
+    ->where('status', 'pending')
+    ->count();
 
         // Recent applications.
         $recentApplications = (clone $applicationsQuery)
@@ -53,9 +63,11 @@ class DashboardController extends Controller
         return view('dashboard', compact(
             'totalJobs',
             'activeJobs',
+            'applicationsCount',
             'totalApplicants',
             'pendingApplications',
-            'recentApplications'
+            'recentApplications',
+            'pendingCount'
         ));
     }
 }

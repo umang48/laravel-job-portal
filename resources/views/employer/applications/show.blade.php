@@ -54,32 +54,32 @@
                 </h2>
 
                 <p class="text-gray-500 mt-1">
-                    Applicant for {{ $jobApplication->job->title }}
+                    Applicant for {{ $application->job->title }}
                 </p>
             </div>
 
             <span class="inline-flex rounded-full px-3 py-1 text-sm font-medium
                 @class([
                     'bg-yellow-100 text-yellow-800' =>
-                        $jobApplication->status === 'pending',
+                        $application->status === 'pending',
 
                     'bg-blue-100 text-blue-800' =>
-                        $jobApplication->status === 'under_review',
+                        $application->status === 'under_review',
 
                     'bg-purple-100 text-purple-800' =>
-                        $jobApplication->status === 'shortlisted',
+                        $application->status === 'shortlisted',
 
                     'bg-indigo-100 text-indigo-800' =>
-                        $jobApplication->status === 'interview',
+                        $application->status === 'interview',
 
                     'bg-green-100 text-green-800' =>
-                        $jobApplication->status === 'hired',
+                        $application->status === 'hired',
 
                     'bg-red-100 text-red-800' =>
-                        $jobApplication->status === 'rejected',
+                        $application->status === 'rejected',
                 ])">
 
-                {{ ucwords(str_replace('_', ' ', $jobApplication->status)) }}
+                {{ ucwords(str_replace('_', ' ', $application->status)) }}
 
             </span>
 
@@ -103,7 +103,7 @@
                 </p>
 
                 <p class="font-medium text-gray-900">
-                    {{ $jobApplication->user->name }}
+                    {{ $application->user->name }}
                 </p>
             </div>
 
@@ -113,7 +113,7 @@
                 </p>
 
                 <p class="font-medium text-gray-900">
-                    {{ $jobApplication->user->email }}
+                    {{ $application->user->email }}
                 </p>
             </div>
 
@@ -123,7 +123,7 @@
                 </p>
 
                 <p class="font-medium text-gray-900">
-                    {{ $jobApplication->user->phone ?: 'Not provided' }}
+                    {{ $application->user->phone ?: 'Not provided' }}
                 </p>
             </div>
 
@@ -133,7 +133,7 @@
                 </p>
 
                 <p class="font-medium text-gray-900">
-                    {{ $jobApplication->user->city ?: 'Not provided' }}
+                    {{ $application->user->city ?: 'Not provided' }}
                 </p>
             </div>
 
@@ -149,10 +149,10 @@
             About Applicant
         </h3>
 
-        @if($jobApplication->user->bio)
+        @if($application->user->bio)
 
             <p class="text-gray-700 whitespace-pre-line">
-                {{ $jobApplication->user->bio }}
+                {{ $application->user->bio }}
             </p>
 
         @else
@@ -173,12 +173,12 @@
             Skills
         </h3>
 
-        @if($jobApplication->user->skills)
+        @if($application->user->skills)
 
             <div class="flex flex-wrap gap-2">
 
                 @foreach(
-                    preg_split('/[,\\n]+/', $jobApplication->user->skills)
+                    preg_split('/[,\\n]+/', $application->user->skills)
                     as $skill
                 )
 
@@ -215,10 +215,10 @@
             Experience
         </h3>
 
-        @if($jobApplication->user->experience)
+        @if($application->user->experience)
 
             <p class="text-gray-700 whitespace-pre-line">
-                {{ $jobApplication->user->experience }}
+                {{ $application->user->experience }}
             </p>
 
         @else
@@ -243,36 +243,42 @@
                     Resume
                 </h3>
 
-                @if($jobApplication->user->resume)
+               @if($application->resume)
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        {{ $jobApplication->user->resume->file_name }}
-                    </p>
+    <p class="text-sm text-gray-500 mt-1">
+        {{ basename($application->resume) }}
+    </p>
 
-                @else
+@else
 
-                    <p class="text-sm text-gray-500 mt-1">
-                        Applicant has not uploaded a resume.
-                    </p>
+    <p class="text-sm text-gray-500 mt-1">
+        Applicant has not uploaded a resume.
+    </p>
 
-                @endif
+@endif
 
             </div>
 
 
-            @if($jobApplication->user->resume)
+            @if($application->resume)
 
-                <a
-                    href="{{ asset('storage/' . $jobApplication->user->resume->file_path) }}"
-                    target="_blank"
-                    class="rounded-lg bg-blue-600 px-5 py-2.5 text-white
-                           hover:bg-blue-700">
+    <a
+        href="{{ asset('storage/' . $application->resume) }}"
+        target="_blank"
+        class="rounded-lg bg-blue-600 px-5 py-2.5 text-white
+               hover:bg-blue-700">
 
-                    View Resume
+        View Resume
 
-                </a>
+    </a>
 
-            @endif
+@else
+
+    <p class="text-sm text-gray-500">
+        Applicant has not uploaded a resume.
+    </p>
+
+@endif
 
         </div>
 
@@ -286,10 +292,10 @@
             Cover Letter
         </h3>
 
-        @if($jobApplication->cover_letter)
+        @if($application->cover_letter)
 
             <p class="text-gray-700 whitespace-pre-line">
-                {{ $jobApplication->cover_letter }}
+                {{ $application->cover_letter }}
             </p>
 
         @else

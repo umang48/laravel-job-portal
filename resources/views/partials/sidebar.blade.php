@@ -62,7 +62,7 @@
     </a>
 
     <a
-        href="{{ route('my-applications.index') }}"
+        href="{{ route('applications.mine') }}"
         class="block px-6 py-3 hover:bg-slate-800"
     >
         My Applications

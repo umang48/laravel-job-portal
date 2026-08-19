@@ -11,6 +11,7 @@ use App\Http\Controllers\MyApplicationController;
 use App\Http\Controllers\SavedJobController;
 use App\Http\Controllers\JobSeekerProfileController;
 use App\Http\Controllers\ResumeController;
+use App\Http\Controllers\ApplicationController;
 
 
 

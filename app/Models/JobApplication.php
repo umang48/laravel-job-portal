@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Models\Job;
+
 class JobApplication extends Model
 {
     protected $fillable = [
@@ -16,10 +18,11 @@ class JobApplication extends Model
         'status',
     ];
 
+
     public function job(): BelongsTo
-    {
-        return $this->belongsTo(Job::class);
-    }
+{
+    return $this->belongsTo(Job::class);
+}
 
     public function user(): BelongsTo
     {
