@@ -12,6 +12,7 @@ use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -217,10 +218,14 @@ public function employerShow(JobApplication $application)
             return back()->with('error', 'You have already applied for this job.');
         }
 
+        $file = $request->file('resume');
+
+        $path = $file->store('resumes/applications', 'public');
+
         JobApplication::create([
             'job_id' => $job->id,
             'user_id' => $user->id,
-            'resume' => $request->validated()['resume'],
+            'resume' => $path,
             'cover_letter' => $request->validated()['cover_letter'] ?? null,
             'status' => 'pending',
         ]);
@@ -259,6 +264,22 @@ $application->load([
     return view(
         'applications.show',
         compact('application')
+    );
+}
+
+
+public function downloadApplicationResume(JobApplication $application)
+{
+    $this->authorize('view', $application);
+
+    abort_unless($application->resume, 404);
+
+    if (!Storage::disk('public')->exists($application->resume)) {
+        abort(404, 'Resume file not found.');
+    }
+
+    return Storage::disk('public')->download(
+        $application->resume
     );
 }
 

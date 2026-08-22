@@ -6,70 +6,57 @@
 
     <nav class="mt-6">
 
-    <a
-        href="{{ route('dashboard') }}"
-        class="block px-6 py-3 hover:bg-slate-800"
-    >
-        Dashboard
-    </a>
+        <a
+            href="{{ route('dashboard') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            Dashboard
+        </a>
 
-    <a
-        href="{{ route('companies.index') }}"
-        class="block px-6 py-3 hover:bg-slate-800"
-    >
-        Companies
-    </a>
+        <a
+            href="{{ route('companies.index') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            Companies
+        </a>
 
-    <a
-        href="{{ route('jobs.index') }}"
-        class="block px-6 py-3 hover:bg-slate-800"
-    >
-        Jobs
-    </a>
+        <a
+            href="{{ route('jobs.index') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            Jobs
+        </a>
 
-    @auth
+        @auth
+            <a
+                href="{{ route('saved-jobs.index') }}"
+                class="block px-6 py-3 hover:bg-slate-800"
+            >
+                ⭐ Saved Jobs
+            </a>
+        @endauth
 
-    <a
-        href="{{ route('saved-jobs.index') }}"
-        class="block px-6 py-3 hover:bg-slate-800">
+        <a
+            href="{{ route('applications.mine') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            My Applications
+        </a>
 
-        ⭐ Saved Jobs
+        <a
+            href="{{ route('employer.applications.index') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            Applications
+        </a>
 
-    </a>
+        <a
+            href="{{ route('job-categories.index') }}"
+            class="block px-6 py-3 hover:bg-slate-800"
+        >
+            Categories
+        </a>
 
-@endauth
-
-    <a href="{{ route('applications.mine') }}"
-   class="block px-6 py-3 hover:bg-slate-800">
-
-    My Applications
-
-</a>
-
-    <a
-    href="{{ route('employer.applications.index') }}"
-    class="block px-6 py-3 hover:bg-slate-800">
-
-    Applications
-
-</a>
-
-    <a
-        href="{{ route('job-categories.index') }}"
-        class="block px-6 py-3 hover:bg-slate-800"
-    >
-        Categories
-    </a>
-
-    <a
-        href="{{ route('applications.mine') }}"
-        class="block px-6 py-3 hover:bg-slate-800"
-    >
-        My Applications
-    </a>
-
-    
-
-</nav>
+    </nav>
 
 </aside>

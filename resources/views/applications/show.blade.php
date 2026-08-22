@@ -47,24 +47,21 @@
 
             @php
                 $statusClasses = match($application->status) {
-                    'pending' =>
-                        'bg-yellow-100 text-yellow-800',
+    'pending' =>
+        'bg-yellow-100 text-yellow-800',
 
-                    'reviewing' =>
-                        'bg-blue-100 text-blue-800',
+    'shortlisted' =>
+        'bg-green-100 text-green-800',
 
-                    'shortlisted' =>
-                        'bg-green-100 text-green-800',
+    'rejected' =>
+        'bg-red-100 text-red-800',
 
-                    'rejected' =>
-                        'bg-red-100 text-red-800',
+    'hired' =>
+        'bg-emerald-100 text-emerald-800',
 
-                    'hired' =>
-                        'bg-emerald-100 text-emerald-800',
-
-                    default =>
-                        'bg-gray-100 text-gray-800',
-                };
+    default =>
+        'bg-gray-100 text-gray-800',
+};
             @endphp
 
             <div>
@@ -141,31 +138,21 @@
     @php
 
         $statuses = [
-            'pending' => [
-                'label' => 'Applied',
-                'description' => 'Your application has been submitted.',
-            ],
+    'pending' => [
+        'label' => 'Applied',
+        'description' => 'Your application has been submitted.',
+    ],
 
-            'reviewing' => [
-                'label' => 'Under Review',
-                'description' => 'The employer is reviewing your application.',
-            ],
+    'shortlisted' => [
+        'label' => 'Shortlisted',
+        'description' => 'You have been shortlisted for this position.',
+    ],
 
-            'shortlisted' => [
-                'label' => 'Shortlisted',
-                'description' => 'You have been shortlisted for this position.',
-            ],
-
-            'interview' => [
-                'label' => 'Interview',
-                'description' => 'You have been selected for an interview.',
-            ],
-
-            'hired' => [
-                'label' => 'Hired',
-                'description' => 'Congratulations! You have been selected.',
-            ],
-        ];
+    'hired' => [
+        'label' => 'Hired',
+        'description' => 'Congratulations! You have been selected.',
+    ],
+];
 
         $statusOrder = array_keys($statuses);
 

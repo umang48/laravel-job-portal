@@ -67,6 +67,10 @@ Route::middleware('auth')->group(function () {
         [JobApplicationController::class, 'updateStatus']
     )->name('job-applications.status');
 
+    Route::get(
+    '/job-applications/{application}/resume',
+    [JobApplicationController::class, 'downloadApplicationResume']
+)->name('job-applications.resume.download');
     
 
 });
